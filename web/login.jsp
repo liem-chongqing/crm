@@ -19,7 +19,7 @@
   </head>
   <body>
     <div class="container-fluid" >
-      <div class="row">
+      <div class="row" >
         <div class="col-lg-12 logo">房地产CRM</div>
         <div class="col-lg-4 col-md-6 col-sm-12">
           <form class="">
