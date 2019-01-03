@@ -2,6 +2,7 @@ package com.bdqn.crm.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
@@ -66,8 +67,6 @@ public class DBUtil {
 			}
 		}
 	}
-
-
 
 	/**
 	 * 创建连接
@@ -150,14 +149,14 @@ public class DBUtil {
 	 * @param pram
 	 * @return
 	 */
-	public static List<Map<String, Object>> query(String sql, List<Object> pram) {
+	public static List<Map<String, Object>> query(String sql, Object... pram) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		connection = DBUtil.getConnection();
 		try {
 			preparedStatement = connection.prepareStatement(sql);
-			if(pram.size() !=0 && pram != null) {
-				for(int i = 0; i < pram.size();  i++) {
-					preparedStatement.setObject((i+1), pram.get(i));
+			if(pram.length !=0 && pram != null) {
+				for(int i = 0; i < pram.length;  i++) {
+					preparedStatement.setObject((i+1), pram[i]);
 				}
 			}
 			// 查看自动拼装的sql
@@ -187,7 +186,86 @@ public class DBUtil {
 		return list;
 	}
 
+	/**
+	 * 获取单个对象 可用于登录注册验证
+	 * @param sql
+	 * @param paras
+	 * @param cls
+	 * @return
+	 */
+	public static <T> T findBySingleObject( Class<T> cls, String sql, Object... paras) {
+		connection =getConnection();
+		T singleObject = null;
+		int index = 1;
+		try {
+			preparedStatement = connection.prepareStatement(sql);
+			if(paras != null && paras.length >0) {
+				preparedStatement.clearParameters();
+				for(int i = 0;i<paras.length;i++) {
+					preparedStatement.setObject(index++,paras[i]);
+				}
+			}
+			resultSet = preparedStatement.executeQuery();
+			ResultSetMetaData rsmd = resultSet.getMetaData();
+			int columnCount = rsmd.getColumnCount();
+			while(resultSet.next()) {
+				singleObject = cls.newInstance();
+				for(int i = 0;i<columnCount;i++) {
+					String columnName = rsmd.getColumnName(i+1);
+					Object columnValue = resultSet.getObject(columnName);
+					Field field = cls.getDeclaredField(columnName);
+					field.setAccessible(true);
+					field.set(singleObject, columnValue);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(resultSet, preparedStatement,connection);
 
+		}
+		return singleObject;
+
+	}
+	/**
+	 *
+	 * 查询集合
+	 */
+	public static<T> List<T> queryListExecute(String sql, ArrayList<Object> paras,Class<T> cls ){
+		connection = getConnection();
+		T singleObject = null;
+		int index = 1;
+		List <T> list = new ArrayList<T>();
+		try {
+			preparedStatement = connection.prepareStatement(sql);
+			if(paras !=null && paras.size()>0) {
+				preparedStatement.clearParameters();
+				for(int i = 0;i<paras.size();i++) {
+					preparedStatement.setObject(index++, paras.get(i));
+				}
+			}
+			resultSet = preparedStatement.executeQuery();
+			ResultSetMetaData rsmd = resultSet.getMetaData();
+			int columnCount = rsmd.getColumnCount();
+			while(resultSet.next()) {
+				singleObject = cls.newInstance();
+				for(int i = 0;i<columnCount;i++) {
+					String columnName = rsmd.getColumnName(i+1);
+					Object columdValue = resultSet.getObject(columnName);
+					Field field = cls.getDeclaredField(columnName);
+					field.setAccessible(true);
+					field.set(singleObject, columdValue);
+				}
+				list.add(singleObject);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(resultSet, preparedStatement, connection);
+		}
+
+		return list;
+	}
 
 
 	/**

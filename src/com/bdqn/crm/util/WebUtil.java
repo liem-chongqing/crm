@@ -3,6 +3,11 @@ package com.bdqn.crm.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebUtil {
 
@@ -102,6 +107,75 @@ public class WebUtil {
         }catch (Exception e) {
             return "";
         }
+    }
+
+
+    /**
+     * 在Servlet中调用这个方法，自动就可以将request转换为需要的类
+     */
+    public static <T> T  parameterObj(HttpServletRequest req,Class cls){
+        T obj=null;
+        try {
+            obj= (T)cls.newInstance();
+            Enumeration<String> ens=req.getParameterNames();
+            while(ens.hasMoreElements()){
+                String key=ens.nextElement();
+                String val=req.getParameter(key);
+                //查找class中对应的setxxx方法
+                Method method[]=cls.getDeclaredMethods();
+                for(Method m:method){
+                    //忽略大小写进行匹配
+                    if(m.getName().equalsIgnoreCase("set"+key)){
+                        Class pc[]=m.getParameterTypes();
+                        if(pc[0].getName().equalsIgnoreCase("float")){
+                            m.invoke(obj, Float.parseFloat(val));
+                        }else if(pc[0].getName().equalsIgnoreCase("int")){
+                            m.invoke(obj, Integer.parseInt(val));
+                        }else {
+                            m.invoke(obj,val);
+                        }
+                    }
+                }
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+
+    /**
+     * 获取的参数转换为map
+     * @param request
+     * @return
+     */
+    private Map<String, Object> analyseCallbackRequest(HttpServletRequest request){
+
+        Map map = new HashMap<>();
+        Enumeration paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements())
+        {
+            String paramName = (String) paramNames.nextElement();
+            String[] paramValues = request.getParameterValues(paramName);
+            if (paramValues.length == 1)
+            {
+                String paramValue = paramValues[0];
+                if (paramValue.length() != 0)
+                {
+                    map.put(paramName, paramValue);
+                }
+
+            }
+        }
+        return map;
     }
 
 }
