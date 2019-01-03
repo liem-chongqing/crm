@@ -1,8 +1,12 @@
 package com.bdqn.crm.entity;
 
+import java.util.Date;
+
 public class User {
     private Integer id;
-    private String userName;
+    private String code;
+    private String password;
+    private Date createTime;
 
     public Integer getId() {
         return id;
@@ -12,20 +16,37 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCode() {
+        return code;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCode(String code) {
+        this.code = code;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", code='" + code + '\'' +
+                ", password='" + password + '\'' +
+                ", createTime=" + createTime +
                 '}';
     }
 }

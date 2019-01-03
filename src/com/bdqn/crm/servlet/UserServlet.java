@@ -4,7 +4,6 @@ package com.bdqn.crm.servlet;
 import com.bdqn.crm.entity.User;
 import com.bdqn.crm.service.UserService;
 import com.bdqn.crm.service.impl.UserServiceImpl;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,7 @@ public class UserServlet extends BaseServlet {
      * @return
      */
     public String login(HttpServletRequest req, HttpServletResponse resp) {
-        String code = req.getParameter("username");
+        String code = req.getParameter("code");
         String password = req.getParameter("password");
         UserService userService = new UserServiceImpl();
         User user = userService.login(code, password);
@@ -48,4 +47,14 @@ public class UserServlet extends BaseServlet {
         return  "login";
     }
 
+    /**
+     * 登出
+     * @param request
+     * @param response
+     * @return
+     */
+    public String out(HttpServletRequest request, HttpServletResponse response){
+        request.getSession().invalidate();
+        return LOGIN;
+    }
 }

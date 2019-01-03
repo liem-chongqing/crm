@@ -193,7 +193,7 @@ public class DBUtil {
 	 * @param cls
 	 * @return
 	 */
-	public static <T> T findBySingleObject( Class<T> cls, String sql, Object... paras) {
+	public static <T> T get( Class<T> cls, String sql, Object... paras) {
 		connection =getConnection();
 		T singleObject = null;
 		int index = 1;
@@ -213,6 +213,8 @@ public class DBUtil {
 				for(int i = 0;i<columnCount;i++) {
 					String columnName = rsmd.getColumnName(i+1);
 					Object columnValue = resultSet.getObject(columnName);
+					// 下划线转换为驼峰标识
+					columnName = BeanMapConvertUtil.underlineToCamelhump(columnName);
 					Field field = cls.getDeclaredField(columnName);
 					field.setAccessible(true);
 					field.set(singleObject, columnValue);
@@ -231,7 +233,7 @@ public class DBUtil {
 	 *
 	 * 查询集合
 	 */
-	public static<T> List<T> queryListExecute(String sql, ArrayList<Object> paras,Class<T> cls ){
+	public static<T> List<T> find(String sql, ArrayList<Object> paras,Class<T> cls ){
 		connection = getConnection();
 		T singleObject = null;
 		int index = 1;

@@ -9,6 +9,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public User login(String code, String password) {
         String sql = "SELECT * FROM sys_user WHERE code=? AND password=?";
-        return DBUtil.findBySingleObject(User.class, sql, code, password);
+        return DBUtil.get(User.class, sql, code, password);
     }
+
 }
