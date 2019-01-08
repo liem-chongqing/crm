@@ -1,0 +1,43 @@
+[
+  {
+    "code": "1000",
+    "name": "员工管理",
+    "url": "user?command=login",
+    "icon": "fa",
+    "child": [
+      {
+        "code": "1001",
+        "name": "查看员工",
+        "url": "user?command=showUser",
+        "icon": "fa"
+      },
+      {
+        "code": "1002",
+        "name": "新增员工",
+        "url": "user?command=addUser",
+        "icon": "fa"
+      }
+    ]
+  },
+  {
+    "code": "2000",
+    "name": "员工管理",
+    "url": "user?command=showUser",
+    "icon": "fa",
+    "child": [
+      {
+        "code": "2001",
+        "name": "查看员工",
+        "url": "user?command=showUser",
+        "icon": "fa"
+      },
+      {
+        "code": "2002",
+        "name": "新增员工",
+        "url": "user?command=addUser",
+        "icon": "fa"
+      }
+    ]
+  }
+
+]

@@ -1,8 +1,14 @@
 package com.bdqn.crm.util;
 
+import com.bdqn.crm.entity.UserInfo;
+import com.bdqn.crm.service.UserService;
+import com.bdqn.crm.service.impl.UserServiceImpl;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
@@ -10,11 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * 用户实现类
@@ -84,6 +86,67 @@ public class DBUtil {
 			throw new RuntimeException("链接数据库失败……");
 		}
 		return connection;
+	}
+
+	public static int insert(String tableName, Object obj){
+		int result = 0;
+		connection = DBUtil.getConnection();
+		try {
+			String sql = getInsertSql(tableName, obj);
+			System.out.println(sql);
+			preparedStatement = connection.prepareStatement(sql);
+			result = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(preparedStatement, connection);
+		}
+		return result;
+	}
+
+
+
+	/**
+	 * 获取并且返回完整的insert  语句
+	 * @param tableName
+	 * @param obj
+	 * @return
+	 */
+	public static String getInsertSql(String tableName, Object obj) {
+		Class c = obj.getClass();
+		Field[] fl = c.getDeclaredFields();
+		StringBuffer fieldName= new StringBuffer();//属性名拼接
+		StringBuffer valueName=new StringBuffer() ; //字段值拼接
+		for (Field field : fl) {
+			String str = field.getName(); //获取属性名
+			Method[] ms = c.getDeclaredMethods(); //获取方法
+			for (Method method : ms) {
+				String name = method.getName();//获取方法名
+				if(name.startsWith("get")&&!name.startsWith("getClass")){//过滤 筛选get方法
+					String str1 = name.substring(3);  //通过方法名截取出字段名
+					if(str.equalsIgnoreCase(str1)&&!"id".equalsIgnoreCase(str)){ //判断前面的属性名 是否 与截取出来的字段名相同 ，则说明顺序相同 ，则拼接
+						//去掉ID
+						fieldName.append(str + ",") ;
+						String str2;
+						try {
+							str2 = method.invoke(obj, null).toString();
+							String type = method.getReturnType().getSimpleName();
+							if("String".equalsIgnoreCase(type)){
+								valueName.append("'"+str2+"'"+",");
+							}else{
+								valueName.append(str2+",");
+							}
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		String endFieldName = fieldName.substring(0, fieldName.length()-1); //去除末尾的逗号
+		String endValueName = valueName.substring(0, valueName.length()-1);
+		String sql= "insert into "+tableName+"("+endFieldName+")"+" values"+"("+endValueName+")";
+		return sql;
 	}
 
 	/**
@@ -217,7 +280,9 @@ public class DBUtil {
 					columnName = BeanMapConvertUtil.underlineToCamelhump(columnName);
 					Field field = cls.getDeclaredField(columnName);
 					field.setAccessible(true);
-					field.set(singleObject, columnValue);
+					if(null != columnValue){
+						field.set(singleObject, columnValue);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -233,17 +298,17 @@ public class DBUtil {
 	 *
 	 * 查询集合
 	 */
-	public static<T> List<T> find(String sql, ArrayList<Object> paras,Class<T> cls ){
+	public static<T> List<T> find(Class<T> cls ,String sql, Object... paras){
 		connection = getConnection();
 		T singleObject = null;
 		int index = 1;
 		List <T> list = new ArrayList<T>();
 		try {
 			preparedStatement = connection.prepareStatement(sql);
-			if(paras !=null && paras.size()>0) {
+			if(paras !=null && paras.length>0) {
 				preparedStatement.clearParameters();
-				for(int i = 0;i<paras.size();i++) {
-					preparedStatement.setObject(index++, paras.get(i));
+				for(int i = 0;i<paras.length;i++) {
+					preparedStatement.setObject(index++, paras[i]);
 				}
 			}
 			resultSet = preparedStatement.executeQuery();
@@ -254,9 +319,13 @@ public class DBUtil {
 				for(int i = 0;i<columnCount;i++) {
 					String columnName = rsmd.getColumnName(i+1);
 					Object columdValue = resultSet.getObject(columnName);
+					// 下划线转换为驼峰标识
+					columnName = BeanMapConvertUtil.underlineToCamelhump(columnName);
 					Field field = cls.getDeclaredField(columnName);
 					field.setAccessible(true);
-					field.set(singleObject, columdValue);
+					if(null != columdValue) {
+						field.set(singleObject, columdValue);
+					}
 				}
 				list.add(singleObject);
 			}

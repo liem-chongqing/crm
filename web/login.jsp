@@ -37,7 +37,7 @@
         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
           <form class="" method="post" action="/user?command=login">
             <div class="form-group">
-              <input type="text" name="code" class="form-control" value="admin" placeholder="请输入邮箱/手机号">
+              <input type="text" name="code" class="form-control" value="100000" placeholder="请输入邮箱/手机号">
             </div>
             <div class="form-group">
               <input type="password" name="password" class="form-control" value="123456" placeholder="请输入密码">

@@ -1,7 +1,26 @@
 package com.bdqn.crm.service;
 
-import com.bdqn.crm.entity.User;
+import com.bdqn.crm.entity.UserInfo;
+
+import java.util.List;
 
 public interface UserService {
-    User login(String code, String password);
+
+    UserInfo login(String code, String password);
+
+    int addUser(UserInfo userInfo);
+
+    /**
+     * 查询总条数
+     * @return
+     */
+    int getTotalNumber();
+
+    /**
+     * 分页查询全部用户
+     * @param i
+     * @param pageSize
+     * @return
+     */
+    List<UserInfo> findPageAllUser(int thisPage, int pageSize);
 }
