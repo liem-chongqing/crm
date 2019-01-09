@@ -49,8 +49,13 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public List<UserInfo> findPageAllUser(int thisPage, int pageSize) {
-        String sql = "SELECT * FROM user_info LIMIT ?,?";
+        String sql = "SELECT id, num, role_name, name, sex, age,  email, mobile, idnum, nation FROM user_info LIMIT ?,?";
         return DBUtil.find(UserInfo.class, sql, thisPage, pageSize);
+    }
+
+    @Override
+    public int save(UserInfo userInfo) {
+        return DBUtil.insert("user_info", userInfo);
     }
 
 

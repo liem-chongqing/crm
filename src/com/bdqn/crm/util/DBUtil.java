@@ -126,13 +126,15 @@ public class DBUtil {
 					String str1 = name.substring(3);  //通过方法名截取出字段名
 					if(str.equalsIgnoreCase(str1)&&!"id".equalsIgnoreCase(str)){ //判断前面的属性名 是否 与截取出来的字段名相同 ，则说明顺序相同 ，则拼接
 						//去掉ID
-						fieldName.append(str + ",") ;
+						fieldName.append("`"+BeanMapConvertUtil.camelhumpToUnderline(str) + "`,") ;
 						String str2;
 						try {
 							str2 = method.invoke(obj, null).toString();
 							String type = method.getReturnType().getSimpleName();
 							if("String".equalsIgnoreCase(type)){
 								valueName.append("'"+str2+"'"+",");
+							} else if("Date".equalsIgnoreCase(type)){
+								valueName.append("NOW(),");
 							}else{
 								valueName.append(str2+",");
 							}

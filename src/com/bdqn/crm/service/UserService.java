@@ -23,4 +23,6 @@ public interface UserService {
      * @return
      */
     List<UserInfo> findPageAllUser(int thisPage, int pageSize);
+
+    int save(UserInfo userInfo);
 }

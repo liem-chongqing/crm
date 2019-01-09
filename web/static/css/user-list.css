@@ -2,3 +2,11 @@
 .search-box{
     padding: 10px 0 !important;
 }
+.page-info{
+    float: left;
+    line-height: 35px;
+}
+.pager {
+    margin: 0;
+    float: right;
+}

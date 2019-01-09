@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService{
     public List<UserInfo> findPageAllUser(int thisPage, int pageSize) {
         return userDao.findPageAllUser(thisPage, pageSize);
     }
+
+    @Override
+    public int save(UserInfo userInfo) {
+        return userDao.save(userInfo);
+    }
 }

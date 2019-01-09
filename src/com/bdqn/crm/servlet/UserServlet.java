@@ -5,12 +5,14 @@ import com.bdqn.crm.entity.UserInfo;
 import com.bdqn.crm.service.UserService;
 import com.bdqn.crm.service.impl.UserServiceImpl;
 import com.bdqn.crm.util.MenuUtil;
+import com.bdqn.crm.util.WebUtil;
 import org.junit.Test;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import com.uwang.pagedemo.entity.PageUtil;
@@ -25,6 +27,39 @@ public class UserServlet extends BaseServlet {
         return "add-user";
     }
 
+    /**
+     * 新增： 保存用户
+     * @param request
+     * @param response
+     * @return
+     */
+    public String save(HttpServletRequest request, HttpServletResponse response) {
+        // 对象接收参数
+        UserInfo userInfo = parameterBean(request, UserInfo.class);
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        if(null != user){
+            userInfo.setNum("100003");
+            userInfo.setPwd("123456");
+            userInfo.setUpdateTime(new Date());
+            userInfo.setCreateTime(new Date());
+            userInfo.setDepartmentName("无");
+            userInfo.setCreateMan("admdin");
+            userInfo.setUpdateMan("admin");
+            UserService userService = new UserServiceImpl();
+            System.out.println(userInfo);
+            if(userService.save(userInfo) > 0){
+                return "add-success";
+            }
+        }
+        return "add-user";
+    }
+
+    /**
+     * 查看用户
+     * @param request
+     * @param response
+     * @return
+     */
     public String showUser(HttpServletRequest request, HttpServletResponse response){
         UserService userService = new UserServiceImpl();
         PageUtil<UserInfo> pageUtil = new PageUtil<>();
@@ -47,24 +82,7 @@ public class UserServlet extends BaseServlet {
         return "show-user";
     }
 
-    /**
-     * 外部访问URI:  /user?command=reg
-     * 重置密码
-     * @return
-     */
-    @Test
-    public void add(){
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(100L);
-        userInfo.setNum("100001");
-        userInfo.setAddress("重庆市店家的");
-        userInfo.setAge(15);
-        userInfo.setBankCard("500232312");
-        userInfo.setCreateTime(new Date());
-        UserService userService = new UserServiceImpl();
-        userService.addUser(userInfo);
-//        return  "";
-    }
+
 
 
     /**
@@ -87,7 +105,7 @@ public class UserServlet extends BaseServlet {
             session.setAttribute("user", user);
             return "home";
         }
-        return  "login";
+        return  LOGIN;
     }
 
 

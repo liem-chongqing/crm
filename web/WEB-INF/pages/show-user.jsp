@@ -28,40 +28,54 @@
             <thead>
                 <tr>
                     <td><input type="checkbox"></td>
+                    <td>序号</td>
                     <td>编号</td>
+                    <td>角色</td>
                     <td>姓名</td>
                     <td>性别</td>
                     <td>年龄</td>
-                    <td>性别</td>
-                    <td>年龄</td>
-                    <td>性别</td>
-                    <td>年龄</td>
-                    <td>性别</td>
+                    <td>民族</td>
+                    <td>身份证</td>
+                    <td>邮箱</td>
+                    <td>电话</td>
                     <td>操作</td>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${pageUserList.pageList}" var="pageUser">
+                <c:forEach varStatus="v" items="${pageUserList.pageList}" var="pageUser">
                 <tr>
                     <td><input type="checkbox"></td>
+                    <td>${(pageUserList.thisPage-1)*pageUserList.pageSize+v.count}</td>
                     <td>${pageUser.num}</td>
-                    <td>${pageUser.name}</td>
                     <td>${pageUser.roleName}</td>
-                    <td>${pageUser.mobile}</td>
+                    <td>${pageUser.name}</td>
                     <td>${pageUser.sex == 0 ? '男':'女'}</td>
                     <td>${pageUser.age}</td>
-                    <td>性别</td>
-                    <td>年龄</td>
-                    <td>性别</td>
+                    <td>${pageUser.nation}</td>
+                    <td>${pageUser.idnum}</td>
+                    <td>${pageUser.email }</td>
+                    <td>${pageUser.mobile}</td>
                     <td>
                         <a href="">详情</a>
-                        <span>&nbsp;|&nbsp;</span>
+                        <span>|</span>
                         <a href="">编辑</a>
                     </td>
                 </tr>
                 </c:forEach>
             </tbody>
         </table>
+    </div>
+    <div class="page">
+        <div class="page-info">当前是第${pageUserList.thisPage}页，共${pageUserList.totalPage}页，共${pageUserList.totalNum}条数据</div>
+        <ul class="pager">
+            <c:if test="${pageUserList.thisPage > 1}">
+                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUserList.thisPage-1}">&larr; 上一页</a></li>
+            </c:if>
+            <c:if test="${pageUserList.thisPage < pageUserList.totalPage}">
+                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUserList.thisPage+1}">下一页 &rarr;</a></li>
+            </c:if>
+
+        </ul>
     </div>
   </div>
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>

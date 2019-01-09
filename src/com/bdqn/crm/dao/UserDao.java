@@ -13,4 +13,6 @@ public interface UserDao {
     int getTotalNumber();
 
     List<UserInfo> findPageAllUser(int thisPage, int pageSize);
+
+    int save(UserInfo userInfo);
 }
