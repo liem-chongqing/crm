@@ -1,15 +1,19 @@
 @charset "UTF-8";
-body{ font-family: "Microsoft YaHei UI"}
+body{ font-family: "Microsoft YaHei UI"; font-size: 12px}
 h1,h2,h3,h4,h5,h6,nav{ margin: 0; padding: 0;}
-a{ color: white}
-a:hover{ color: #ccc; text-decoration: none}
+a{ color: white; text-decoration: none}
+a:link    { color:#ccc; text-decoration: none}
+a:visited { color:#ccc; text-decoration: none}
+a:hover   { color: white; text-decoration: none}
+a:active  { color:#ccc; text-decoration: none}
+table{ font-size: 14px}
 .header-info{
 	display: flex;
 	padding: 10px 20px;
 	height:45px;
 	justify-content: space-between;
 	align-items:center;
-	background-color: #5cb85c;
+	background-color: #333;
 	position: absolute;
 	top: 0;
 	color: white;
@@ -44,7 +48,7 @@ a:hover{ color: #ccc; text-decoration: none}
 	bottom: 5%;
 	border-left:1px solid #c0c0c0;
 	background-color: white;
-	padding: 0 15px;
+	padding: 0;
 }
 ul,li{
 	list-style: none;

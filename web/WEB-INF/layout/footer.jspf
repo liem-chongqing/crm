@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <div class="row">
-	<footer class="col-lg-12 col-xs-12 footer" >Copyright © 2018-2019 BDQN All Rights Reserved</footer>
+	<footer class="col-lg-12 col-xs-12 footer" >Copyright © 2018-2019 &nbsp;<a href="http://www.023bdqn.com" target="_blank" style="color: #00AA88">023bdqn.com</a>&nbsp; All Rights Reserved</footer>
 </div>
 
 

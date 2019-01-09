@@ -13,23 +13,27 @@
     <div class="search-box">
         <form class="form-inline">
             <div class="form-group form-group-sm">
-                <label for="exampleInputName2">姓名</label>
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                <label >工号</label>
+                <input type="email" class="form-control" placeholder="请输入工号">
             </div>
             <div class="form-group form-group-sm">
-                <label for="exampleInputEmail2">工号</label>
-                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+                <label >性别</label>
+                <select class="form-control">
+                    <option>不限</option>
+                    <option>男</option>
+                    <option>女</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-default btn-sm">搜索</button>
         </form>
     </div>
     <div class="table-responsive">
-        <table class="table table-hover table-bordered text-center">
+        <table class="table table-hover table-striped table-bordered text-center">
             <thead>
                 <tr>
                     <td><input type="checkbox"></td>
                     <td>序号</td>
-                    <td>编号</td>
+                    <td>工号</td>
                     <td>角色</td>
                     <td>姓名</td>
                     <td>性别</td>
@@ -56,9 +60,11 @@
                     <td>${pageUser.email }</td>
                     <td>${pageUser.mobile}</td>
                     <td>
-                        <a href="">详情</a>
-                        <span>|</span>
-                        <a href="">编辑</a>
+                        <a href="#none"  data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-eye-open" title="查看"></span></a>
+                        <span>&nbsp;</span>
+                        <a href=""><span class="glyphicon glyphicon-pencil" title="修改"></span></a>
+                        <span>&nbsp;</span>
+                        <a href=""><span class="glyphicon glyphicon-trash" title="删除"></span></a>
                     </td>
                 </tr>
                 </c:forEach>
@@ -78,6 +84,22 @@
         </ul>
     </div>
   </div>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+              </div>
+              <div class="modal-body">在这里添加一些文本</div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button type="button" class="btn btn-primary">提交更改</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+  </div>
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
 </body>
 </html>

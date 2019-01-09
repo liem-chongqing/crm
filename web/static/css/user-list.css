@@ -1,4 +1,7 @@
 @import "common.css";
+.container-main{
+    padding: 2px 15px;
+}
 .search-box{
     padding: 10px 0 !important;
 }
