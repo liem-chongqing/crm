@@ -15,4 +15,6 @@ public interface UserDao {
     List<UserInfo> findPageAllUser(int thisPage, int pageSize);
 
     int save(UserInfo userInfo);
+
+    int deleteOneByUserId(long userId);
 }

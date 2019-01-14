@@ -13,6 +13,7 @@
 </head>
 <body>
     <div class="container-main">
+        <h1 class="son-title">新增员工</h1>
         <div class="container-fluid base-info">统一默认密码为：123456</div>
         <div class="col-md-12 col-sm-12">
             <div class="form-group">

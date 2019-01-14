@@ -1,4 +1,4 @@
-package com.uwang.pagedemo.entity;
+package com.bdqn.crm.util;
 
 import java.util.List;
 

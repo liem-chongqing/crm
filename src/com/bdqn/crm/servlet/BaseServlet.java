@@ -1,9 +1,9 @@
 package com.bdqn.crm.servlet;
 
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
@@ -13,7 +13,7 @@ public class BaseServlet extends HttpServlet {
     protected final static String PATH = "/WEB-INF/pages/";
     protected final static String COMMAND = "command";
     protected final static String SUFFIX = ".jsp";
-    protected final static String LOGIN = "/login.jsp";
+    protected final static String REDIRECT = "redirect";
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp){
@@ -26,8 +26,8 @@ public class BaseServlet extends HttpServlet {
             Class clazz = this.getClass();
             Method method = clazz.getMethod(command, HttpServletRequest.class, HttpServletResponse.class);
             String path = (String) method.invoke(this, req, resp);
-            if(LOGIN.equals(path)){
-                resp.sendRedirect(req.getContextPath()+LOGIN);
+            if(path.contains(REDIRECT)){
+                resp.sendRedirect(req.getContextPath()+"/"+path.split(":")[1]);
                 return;
             }
             if(path!=null && !"".equals(path)){
@@ -38,7 +38,6 @@ public class BaseServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 
 
     /**
@@ -91,6 +90,8 @@ public class BaseServlet extends HttpServlet {
         String parameter = req.getQueryString();
         System.out.println(req.getRequestURL()+"?"+parameter);
     }
+
+
 
 
 }

@@ -5,17 +5,16 @@ import com.bdqn.crm.entity.UserInfo;
 import com.bdqn.crm.service.UserService;
 import com.bdqn.crm.service.impl.UserServiceImpl;
 import com.bdqn.crm.util.MenuUtil;
-import com.bdqn.crm.util.WebUtil;
-import org.junit.Test;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
-import com.uwang.pagedemo.entity.PageUtil;
+
+import com.bdqn.crm.util.StringsUtil;
+import com.bdqn.crm.util.PageUtil;
 
 /**
  * 用户模块
@@ -42,9 +41,10 @@ public class UserServlet extends BaseServlet {
             userInfo.setPwd("123456");
             userInfo.setUpdateTime(new Date());
             userInfo.setCreateTime(new Date());
-            userInfo.setDepartmentName("无");
-            userInfo.setCreateMan("admdin");
-            userInfo.setUpdateMan("admin");
+            userInfo.setDepartmentName("估计要删");
+            userInfo.setCreateMan(user.getName());
+            userInfo.setUpdateMan(user.getName());
+            userInfo.setAge(StringsUtil.idNOToAge(userInfo.getIdnum()));
             UserService userService = new UserServiceImpl();
             System.out.println(userInfo);
             if(userService.save(userInfo) > 0){
@@ -105,10 +105,24 @@ public class UserServlet extends BaseServlet {
             session.setAttribute("user", user);
             return "home";
         }
-        return  LOGIN;
+        return  "redirect:login.jsp";
     }
 
-
+    /**
+     * 根据ID删除数据
+     * @param request
+     * @param response
+     * @return
+     */
+    public String deleteOne(HttpServletRequest request, HttpServletResponse response){
+        String userId = request.getParameter("userId");
+        if(null != userId){
+            UserService userService = new UserServiceImpl();
+            int result = userService.deleteOneByUserId(Long.parseLong(userId));
+            System.out.println("result:"+result);
+        }
+        return "redirect:user?command=showUser";
+    }
 
     /**
      * 登出
@@ -118,6 +132,6 @@ public class UserServlet extends BaseServlet {
      */
     public String out(HttpServletRequest request, HttpServletResponse response){
         request.getSession().invalidate();
-        return LOGIN;
+        return "redirect:login.jsp";
     }
 }

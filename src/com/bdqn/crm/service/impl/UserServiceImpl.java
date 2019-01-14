@@ -35,4 +35,9 @@ public class UserServiceImpl implements UserService{
     public int save(UserInfo userInfo) {
         return userDao.save(userInfo);
     }
+
+    @Override
+    public int deleteOneByUserId(long userId) {
+        return userDao.deleteOneByUserId(userId);
+    }
 }

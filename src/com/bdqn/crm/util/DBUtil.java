@@ -24,51 +24,11 @@ import java.util.*;
  */
 public class DBUtil {
 
-	public static String dbDriver;
-	public static String dbUrl;
-	public static String dbUser;
-	public static String dbPassword;
-
 	public static Connection connection = null;
 	public static PreparedStatement preparedStatement = null;
 	public static ResultSet resultSet = null;
 
-	/**
-	 * 加载类就会执行
-	 */
-	static {
-		// 加载配置文件
-		getConfig();
-	}
 
-	/**
-	 * 读取properties配置文件的值
-	 * 永远返回的都是String类型
-	 */
-	public static void getConfig() {
-		InputStream inStream = null;
-		try {
-			//构建一个读取properties配置文件的实例
-			Properties properties = new Properties();
-			// 底层通过流的操作把配置文件拿进来
-			inStream = DBUtil.class.getClassLoader().getResourceAsStream("db.properties");
-			// 把文件交给properties对象管理（加载）
-			properties.load(inStream);
-			dbDriver = properties.getProperty("jdbc.driver");
-			dbUrl = properties.getProperty("jdbc.url");
-			dbUser = properties.getProperty("jdbc.user");
-			dbPassword = properties.getProperty("jdbc.password");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("找不到文件");
-		}finally {
-			try {
-				inStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	/**
 	 * 创建连接
@@ -76,8 +36,8 @@ public class DBUtil {
 	 */
 	public static Connection getConnection() {
 		try {
-			Class.forName(dbDriver);
-			connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+			Class.forName(LoadConfig.dbDriver);
+			connection = DriverManager.getConnection(LoadConfig.dbUrl, LoadConfig.dbUser, LoadConfig.dbPassword);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new RuntimeException("找不到类……");
@@ -135,7 +95,7 @@ public class DBUtil {
 								valueName.append("'"+str2+"'"+",");
 							} else if("Date".equalsIgnoreCase(type)){
 								valueName.append("NOW(),");
-							}else{
+							} else{
 								valueName.append(str2+",");
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

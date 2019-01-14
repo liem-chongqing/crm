@@ -25,4 +25,11 @@ public interface UserService {
     List<UserInfo> findPageAllUser(int thisPage, int pageSize);
 
     int save(UserInfo userInfo);
+
+    /**
+     * 根据用户ID删除一条
+     * @param l
+     * @return
+     */
+    int deleteOneByUserId(long l);
 }

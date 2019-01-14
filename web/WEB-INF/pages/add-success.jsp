@@ -11,7 +11,7 @@
 <body>
     <div class="container-main">
         <div class="col-md-12 col-sm-12">
-            新增成功~~~
+            新增员工成功! <a href="${CTX}/user?command=showUser">点击查看</a>
         </div>
     </div>
     <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
