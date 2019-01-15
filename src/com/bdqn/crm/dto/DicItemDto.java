@@ -1,15 +1,18 @@
-package com.bdqn.crm.entity;
+package com.bdqn.crm.dto;
 
 /**
  * 字典列表
  */
-public class DicItem {
+public class DicItemDto {
 
     private Long id;
     private Long typeId;
     private String name;
     private String remark;
     private int used;
+
+    // 扩展字段
+    private String dicTypeName;
 
     public Long getId() {
         return id;
@@ -52,6 +55,13 @@ public class DicItem {
     }
 
 
+    public String getDicTypeName() {
+        return dicTypeName;
+    }
+
+    public void setDicTypeName(String dicTypeName) {
+        this.dicTypeName = dicTypeName;
+    }
 
     @Override
     public String toString() {
@@ -61,6 +71,7 @@ public class DicItem {
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 ", used=" + used +
+                ", dicTypeName='" + dicTypeName + '\'' +
                 '}';
     }
 }

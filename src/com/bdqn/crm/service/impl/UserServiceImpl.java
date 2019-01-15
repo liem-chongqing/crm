@@ -36,8 +36,9 @@ public class UserServiceImpl implements UserService{
         return userDao.save(userInfo);
     }
 
+
     @Override
-    public int deleteOneByUserId(long userId) {
-        return userDao.deleteOneByUserId(userId);
+    public List<UserInfo> findAllUserByEnable(int enable) {
+        return userDao.findAllUserByEnable(enable);
     }
 }

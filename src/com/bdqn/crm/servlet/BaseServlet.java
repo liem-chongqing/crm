@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 
 public class BaseServlet extends HttpServlet {
@@ -51,16 +54,22 @@ public class BaseServlet extends HttpServlet {
             while(ens.hasMoreElements()){
                 String key=ens.nextElement();
                 String val=req.getParameter(key);
+                System.out.println("val:"+key+"=="+val);
                 //查找class中对应的setxxx方法
                 Method method[]=cls.getDeclaredMethods();
                 for(Method m:method){
                     //忽略大小写进行匹配
                     if(m.getName().equalsIgnoreCase("set"+key)){
                         Class pc[]=m.getParameterTypes();
-                        if(pc[0].getName().equalsIgnoreCase("float")){
+                        if(pc[0].getSimpleName().equalsIgnoreCase("Float") || pc[0].getSimpleName().equalsIgnoreCase("float")){
                             m.invoke(obj, Float.parseFloat(val));
-                        }else if(pc[0].getName().equalsIgnoreCase("int")){
+                        }else if(pc[0].getSimpleName().equalsIgnoreCase("Integer") || pc[0].getSimpleName().equalsIgnoreCase("int")){
                             m.invoke(obj, Integer.parseInt(val));
+                        }else if(pc[0].getSimpleName().equalsIgnoreCase("Long") || pc[0].getSimpleName().equalsIgnoreCase("long")){
+                            m.invoke(obj, Long.parseLong(val));
+                        }else if(pc[0].getSimpleName().equalsIgnoreCase("Date")){
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            m.invoke(obj, sdf.parse(val));
                         }else {
                             m.invoke(obj,val);
                         }
@@ -76,6 +85,8 @@ public class BaseServlet extends HttpServlet {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return obj;

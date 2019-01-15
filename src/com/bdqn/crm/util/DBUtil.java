@@ -16,6 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -93,12 +95,17 @@ public class DBUtil {
 							String type = method.getReturnType().getSimpleName();
 							if("String".equalsIgnoreCase(type)){
 								valueName.append("'"+str2+"'"+",");
-							} else if("Date".equalsIgnoreCase(type)){
-								valueName.append("NOW(),");
+							} else if("Date".equalsIgnoreCase(type) ){
+//								valueName.append("NOW(),");
+								SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+								SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+								valueName.append("'"+sdf2.format(sdf.parse(str2))+"',");
 							} else{
 								valueName.append(str2+",");
 							}
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							e.printStackTrace();
+						}catch (ParseException e) {
 							e.printStackTrace();
 						}
 					}
@@ -236,7 +243,7 @@ public class DBUtil {
 			while(resultSet.next()) {
 				singleObject = cls.newInstance();
 				for(int i = 0;i<columnCount;i++) {
-					String columnName = rsmd.getColumnName(i+1);
+					String columnName = rsmd.getColumnLabel(i+1);
 					Object columnValue = resultSet.getObject(columnName);
 					// 下划线转换为驼峰标识
 					columnName = BeanMapConvertUtil.underlineToCamelhump(columnName);
@@ -260,7 +267,7 @@ public class DBUtil {
 	 *
 	 * 查询集合
 	 */
-	public static<T> List<T> find(Class<T> cls ,String sql, Object... paras){
+	public static <T> List<T> find(Class<T> cls ,String sql, Object... paras){
 		connection = getConnection();
 		T singleObject = null;
 		int index = 1;
@@ -279,7 +286,7 @@ public class DBUtil {
 			while(resultSet.next()) {
 				singleObject = cls.newInstance();
 				for(int i = 0;i<columnCount;i++) {
-					String columnName = rsmd.getColumnName(i+1);
+					String columnName = rsmd.getColumnLabel(i+1);
 					Object columdValue = resultSet.getObject(columnName);
 					// 下划线转换为驼峰标识
 					columnName = BeanMapConvertUtil.underlineToCamelhump(columnName);
@@ -365,5 +372,7 @@ public class DBUtil {
 		close(preparedStatement);
 		close(connection);
 	}
+
+
 
 }

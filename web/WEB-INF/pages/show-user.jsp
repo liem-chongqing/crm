@@ -63,7 +63,7 @@
                     <td>
                         <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
                         <span>&nbsp;</span>
-                        <span onclick="deleteOne(${pageUser.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
+                        <span onclick="deleteOne('user_info', ${pageUser.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
                 </tr>
                 </c:forEach>
@@ -210,11 +210,8 @@
   <!--// 删除-->
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
+  <%@ include file="/WEB-INF/layout/delete-model.jspf"%>
   <script  type="text/javascript" >
-      // 删除一条数据
-      function deleteOne(userId) {
-          $("#actionDelete").attr("href","${CTX}/user?command=deleteOne&userId="+userId);
-      }
       $(function () {
           // 编辑提示
           $("[data-toggle='tooltip']").tooltip();

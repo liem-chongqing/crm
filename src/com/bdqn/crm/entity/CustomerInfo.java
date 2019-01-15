@@ -2,7 +2,7 @@ package com.bdqn.crm.entity;
 
 import java.util.Date;
 
-public class customerInfo {
+public class CustomerInfo {
     private Long id;
     //客户状态ID，引用T_CUSTOMER_CONDITION表主键
     private Integer conditionId;
@@ -35,7 +35,7 @@ public class customerInfo {
     // 客户微信
     private String wechat;
     // 客户生日表
-    private Date birthDay;
+    private String birthDay;
     // 数据创建时间
     private Date createTime;
     // 数据创建人
@@ -46,6 +46,7 @@ public class customerInfo {
     private String updateMan;
     // 客户公司
     private String company;
+    // 数据状态
     private int used;
 
     public Long getId() {
@@ -176,11 +177,11 @@ public class customerInfo {
         this.wechat = wechat;
     }
 
-    public Date getBirthDay() {
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 

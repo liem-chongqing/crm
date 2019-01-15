@@ -26,10 +26,13 @@ public interface UserService {
 
     int save(UserInfo userInfo);
 
+
     /**
-     * 根据用户ID删除一条
-     * @param l
+     * 查询所有员工
+     * @param enable
      * @return
      */
-    int deleteOneByUserId(long l);
+    List<UserInfo> findAllUserByEnable(int enable);
+
+
 }

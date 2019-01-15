@@ -1,7 +1,10 @@
 package com.bdqn.crm.service.impl;
 
+import com.bdqn.crm.dao.CustomerDao;
 import com.bdqn.crm.dao.DicDao;
+import com.bdqn.crm.dao.impl.CustomerDaoImpl;
 import com.bdqn.crm.dao.impl.DicDaoImpl;
+import com.bdqn.crm.dto.DicItemDto;
 import com.bdqn.crm.entity.DicItem;
 import com.bdqn.crm.entity.DicType;
 import com.bdqn.crm.service.DicService;
@@ -21,7 +24,7 @@ public class DicServiceImpl implements DicService {
     }
 
     @Override
-    public List<DicItem> getAllItems(int thisPage, int pageSize) {
+    public List<DicItemDto> getAllItems(int thisPage, int pageSize) {
         return dicDao.getAllItems(thisPage, pageSize);
     }
 
@@ -33,5 +36,10 @@ public class DicServiceImpl implements DicService {
     @Override
     public int saveItem(DicItem dicItem) {
         return dicDao.saveItem(dicItem);
+    }
+
+    @Override
+    public List<DicItem> findDicType(String key) {
+        return dicDao.findDicType(key);
     }
 }

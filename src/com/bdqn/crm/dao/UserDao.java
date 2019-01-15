@@ -16,5 +16,6 @@ public interface UserDao {
 
     int save(UserInfo userInfo);
 
-    int deleteOneByUserId(long userId);
+
+    List<UserInfo> findAllUserByEnable(int enable);
 }

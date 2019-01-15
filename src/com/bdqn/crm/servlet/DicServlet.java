@@ -1,5 +1,6 @@
 package com.bdqn.crm.servlet;
 
+import com.bdqn.crm.dto.DicItemDto;
 import com.bdqn.crm.entity.DicItem;
 import com.bdqn.crm.entity.DicType;
 import com.bdqn.crm.service.DicService;
@@ -38,6 +39,7 @@ public class DicServlet extends  BaseServlet {
     public String saveItem(HttpServletRequest request, HttpServletResponse response) {
         // 对象接收参数
         DicItem dicItem = parameterBean(request, DicItem.class);
+        System.out.println(dicItem);
         DicService dicService = new DicServiceImpl();
         dicService.saveItem(dicItem);
         return "redirect:dic?command=getAllItem";
@@ -77,7 +79,7 @@ public class DicServlet extends  BaseServlet {
      */
     public String getAllItem(HttpServletRequest request, HttpServletResponse response){
         DicService dicService = new DicServiceImpl();
-        PageUtil<DicItem> pageUtil = new PageUtil<>();
+        PageUtil<DicItemDto> pageUtil = new PageUtil<>();
         int totalNumber = dicService.getTotalNumber("dic_item");
         pageUtil.setTotalNum(totalNumber);
         String thisPage = request.getParameter("thisPage");
@@ -87,9 +89,12 @@ public class DicServlet extends  BaseServlet {
         int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
         pageUtil.setTotalPage(totalPage);
 
-        List<DicItem> dicItems = dicService.getAllItems((pageUtil.getThisPage()-1) * pageUtil.getPageSize(), pageUtil.getPageSize());
+        List<DicItemDto> dicItems = dicService.getAllItems((pageUtil.getThisPage()-1) * pageUtil.getPageSize(), pageUtil.getPageSize());
         pageUtil.setPageList(dicItems);
         request.setAttribute("pageUtil", pageUtil);
+        // 查询所有客户来源
+        List<DicType> dicTypes = dicService.getAllType(0, 99999999);
+        request.setAttribute("dicTypes", dicTypes);
         return "show-dic-item";
     }
 }

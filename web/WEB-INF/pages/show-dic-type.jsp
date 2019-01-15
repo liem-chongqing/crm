@@ -38,9 +38,9 @@
                     <td>${dicType.remark }</td>
                     <td>${dicType.used == 0 ? '有效':'无效'}</td>
                     <td>
-                        <a href="#" data-toggle="modal" data-target="#modifyModel">编辑</a>
-                        <span>&nbsp;|&nbsp;</span>
-                        <a href="#" data-toggle="modal" data-target="#deleteModel">删除</a>
+                        <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
+                        <span>&nbsp;</span>
+                        <span onclick="deleteOne('dic_type',${dicType.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
                 </tr>
                 </c:forEach>
@@ -51,10 +51,10 @@
         <div class="page-info">当前是第${pageUtil.thisPage}页，共${pageUtil.totalPage}页，共${pageUtil.totalNum}条数据</div>
         <ul class="pager">
             <c:if test="${pageUtil.thisPage > 1}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUtil.thisPage-1}">&larr; 上一页</a></li>
+                <li><a href="${CTX}/dic?command=getAllType&thisPage=${pageUtil.thisPage-1}">&larr; 上一页</a></li>
             </c:if>
             <c:if test="${pageUtil.thisPage < pageUtil.totalPage}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUtil.thisPage+1}">下一页 &rarr;</a></li>
+                <li><a href="${CTX}/dic?command=getAllType&thisPage=${pageUtil.thisPage+1}">下一页 &rarr;</a></li>
             </c:if>
         </ul>
     </div>
@@ -131,51 +131,8 @@
           </div><!-- /.modal-content -->
       </div><!-- /.modal -->
   </div>
-  <!-- 删除模态框 -->
-  <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                      &times;
-                  </button>
-                  <h4 class="modal-title" id="myModalLabel2">
-                      删除数据
-                  </h4>
-              </div>
-              <div class="modal-body">
-                  <span class="glyphicon glyphicon-trash"></span>&nbsp;确定要删除吗？
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">取消
-                  </button>
-                  <a class="btn btn-primary" id="actionDelete" href="#">确定</a>
-              </div>
-          </div><!-- /.modal-content -->
-      </div><!-- /.modal -->
-  </div>
-  <!--// 删除-->
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
-  <script  type="text/javascript" >
-      // 删除一条数据
-      function deleteOne(userId) {
-          $("#actionDelete").attr("href","${CTX}/user?command=deleteOne&userId="+userId);
-      }
-      $(function () {
-          // 编辑提示
-          $("[data-toggle='tooltip']").tooltip();
-          //全选与反选方式二
-          $("#totalCB").click(function() {
-              var flag = this.checked;
-              $(":checkbox[type='checkbox']").attr('checked',flag);
-          });
-          //而且还实现了:当其中不勾选某一个选项的时候,则去掉全选复选框
-          $(":checkbox[type='checkbox']").click(function(){
-              $("#totalCB").attr('checked',
-              $(":checkbox[type='checkbox']").length==$(":checkbox[type='checkbox']:checked").length);
-          });
-      });
-  </script>
+  <%@ include file="/WEB-INF/layout/delete-model.jspf"%>
 </body>
 </html>

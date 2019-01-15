@@ -3,19 +3,19 @@
     "code": "1000",
     "name": "员工管理",
     "url": "user?command=login",
-    "icon": "fa",
+    "icon": "glyphicon glyphicon-user",
     "child": [
       {
         "code": "1001",
         "name": "查看员工",
         "url": "user?command=showUser",
-        "icon": "fa"
+        "icon": "glyphicon glyphicon-chevron-right"
       },
       {
         "code": "1002",
         "name": "新增员工",
         "url": "user?command=addUser",
-        "icon": "fa"
+        "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
   },
@@ -23,39 +23,72 @@
     "code": "2000",
     "name": "客户管理",
     "url": "user?command=showUser",
-    "icon": "fa",
+    "icon": "glyphicon glyphicon-lock",
     "child": [
       {
         "code": "2001",
         "name": "查看客户",
-        "url": "user?command=showUser",
-        "icon": "fa"
+        "url": "customer?command=showCustomer",
+        "icon": "glyphicon glyphicon-chevron-right"
       },
       {
         "code": "2002",
         "name": "新增客户",
-        "url": "user?command=addUser",
-        "icon": "fa"
+        "url": "customer?command=add",
+        "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
   },
   {
     "code": "3000",
-    "name": "参数配置",
+    "name": "房屋管理",
     "url": "#none",
-    "icon": "fa",
+    "icon": "glyphicon glyphicon-home",
     "child": [
       {
         "code": "3001",
-        "name": "分类信息",
-        "url": "dic?command=getAllType",
-        "icon": "fa"
+        "name": "查看房屋",
+        "url": "house?command=showHouseInfo",
+        "icon": "glyphicon glyphicon-chevron-right"
       },
       {
         "code": "3002",
+        "name": "新增房屋",
+        "url": "house?command=add",
+        "icon": "glyphicon glyphicon-chevron-right"
+      }
+    ]
+  },
+  {
+    "code": "4000",
+    "name": "参数配置",
+    "url": "#none",
+    "icon": "glyphicon glyphicon-cog",
+    "child": [
+      {
+        "code": "4001",
+        "name": "分类信息",
+        "url": "dic?command=getAllType",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },
+      {
+        "code": "4002",
         "name": "列表信息",
         "url": "dic?command=getAllItem",
-        "icon": "fa"
+        "icon": "glyphicon glyphicon-chevron-right"
+      }
+    ]
+  },{
+    "code": "5000",
+    "name": "公告管理",
+    "url": "#none",
+    "icon": "glyphicon glyphicon-volume-up",
+    "child": [
+      {
+        "code": "5001",
+        "name": "查看公告",
+        "url": "notice?command=showNotice",
+        "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
   }

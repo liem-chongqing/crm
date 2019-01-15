@@ -21,6 +21,7 @@
                 <tr>
                     <td><input id="totalCB" type="checkbox"></td>
                     <td>序号</td>
+                    <td>所属</td>
                     <td>名称</td>
                     <td>描述</td>
                     <td>状态</td>
@@ -32,13 +33,14 @@
                 <tr>
                     <td><input type="checkbox"></td>
                     <td>${(pageUserList.thisPage-1)*pageUserList.pageSize+v.count}</td>
+                    <td>${dicItem.dicTypeName}</td>
                     <td>${dicItem.name}</td>
                     <td>${dicItem.remark }</td>
                     <td>${dicItem.used == 0 ? '有效':'无效'}</td>
                     <td>
-                        <a href="#" data-toggle="modal" data-target="#modifyModel">编辑</a>
-                        <span>&nbsp;|&nbsp;</span>
-                        <a href="#" data-toggle="modal" data-target="#deleteModel">删除</a>
+                        <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
+                        <span>&nbsp;</span>
+                        <span onclick="deleteOne('dic_item',${dicItem.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
                 </tr>
                 </c:forEach>
@@ -49,10 +51,10 @@
         <div class="page-info">当前是第${pageUtil.thisPage}页，共${pageUtil.totalPage}页，共${pageUtil.totalNum}条数据</div>
         <ul class="pager">
             <c:if test="${pageUtil.thisPage > 1}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUtil.thisPage-1}">&larr; 上一页</a></li>
+                <li><a href="${CTX}/dic?command=getAllItem&thisPage=${pageUtil.thisPage-1}">&larr; 上一页</a></li>
             </c:if>
             <c:if test="${pageUtil.thisPage < pageUtil.totalPage}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUtil.thisPage+1}">下一页 &rarr;</a></li>
+                <li><a href="${CTX}/dic?command=getAllItem&thisPage=${pageUtil.thisPage+1}">下一页 &rarr;</a></li>
             </c:if>
         </ul>
     </div>
@@ -70,8 +72,9 @@
                         <div class="form-group">
                             <label>字典类型</label>
                             <select class="form-control" name="typeId">
-                                <option value="0">客户来源</option>
-                                <option value="1">否</option>
+                                <c:forEach items="${dicTypes}" var="dicType">
+                                    <option value="${dicType.id}">${dicType.name}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
@@ -132,51 +135,8 @@
           </div><!-- /.modal-content -->
       </div><!-- /.modal -->
   </div>
-  <!-- 删除模态框 -->
-  <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                      &times;
-                  </button>
-                  <h4 class="modal-title" id="myModalLabel2">
-                      删除数据
-                  </h4>
-              </div>
-              <div class="modal-body">
-                  <span class="glyphicon glyphicon-trash"></span>&nbsp;确定要删除吗？
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">取消
-                  </button>
-                  <a class="btn btn-primary" id="actionDelete" href="#">确定</a>
-              </div>
-          </div><!-- /.modal-content -->
-      </div><!-- /.modal -->
-  </div>
-  <!--// 删除-->
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
-  <script  type="text/javascript" >
-      // 删除一条数据
-      function deleteOne(userId) {
-          $("#actionDelete").attr("href","${CTX}/user?command=deleteOne&userId="+userId);
-      }
-      $(function () {
-          // 编辑提示
-          $("[data-toggle='tooltip']").tooltip();
-          //全选与反选方式二
-          $("#totalCB").click(function() {
-              var flag = this.checked;
-              $(":checkbox[type='checkbox']").attr('checked',flag);
-          });
-          //而且还实现了:当其中不勾选某一个选项的时候,则去掉全选复选框
-          $(":checkbox[type='checkbox']").click(function(){
-              $("#totalCB").attr('checked',
-              $(":checkbox[type='checkbox']").length==$(":checkbox[type='checkbox']:checked").length);
-          });
-      });
-  </script>
+  <%@ include file="/WEB-INF/layout/delete-model.jspf"%>
 </body>
 </html>

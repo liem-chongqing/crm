@@ -42,5 +42,7 @@ public class Constants {
         int DISABLE = 1;        // 未激活
     }
 
-
+    public interface  Code{
+        
+    }
 }

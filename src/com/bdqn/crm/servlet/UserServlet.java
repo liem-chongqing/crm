@@ -108,21 +108,7 @@ public class UserServlet extends BaseServlet {
         return  "redirect:login.jsp";
     }
 
-    /**
-     * 根据ID删除数据
-     * @param request
-     * @param response
-     * @return
-     */
-    public String deleteOne(HttpServletRequest request, HttpServletResponse response){
-        String userId = request.getParameter("userId");
-        if(null != userId){
-            UserService userService = new UserServiceImpl();
-            int result = userService.deleteOneByUserId(Long.parseLong(userId));
-            System.out.println("result:"+result);
-        }
-        return "redirect:user?command=showUser";
-    }
+
 
     /**
      * 登出

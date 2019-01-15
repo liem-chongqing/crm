@@ -59,9 +59,9 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public int deleteOneByUserId(long userId) {
-        String sql = "DELETE FROM user_info WHERE id=?";
-        return DBUtil.update(sql, userId);
+    public List<UserInfo> findAllUserByEnable(int enable) {
+        String sql ="SELECT id, `name`, num FROM user_info WHERE used=?";
+        return DBUtil.find(UserInfo.class, sql, enable);
     }
 
 
