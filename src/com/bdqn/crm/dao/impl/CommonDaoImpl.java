@@ -38,4 +38,10 @@ public class CommonDaoImpl implements CommonDao {
         String sql = "DELETE FROM "+tableName+" WHERE id=?";
         return DBUtil.update(sql, id);
     }
+
+    @Override
+    public int deleteBatch(String tableName, String ids) {
+        String sql = "DELETE FROM "+tableName+" WHERE FIND_IN_SET(id,?)";
+        return DBUtil.update(sql, ids);
+    }
 }

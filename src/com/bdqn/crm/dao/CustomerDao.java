@@ -10,5 +10,7 @@ public interface CustomerDao {
 
     int save(CustomerInfo customerInfo);
 
-    List<CustomerInfoDto> findPageAllCustomer(int thisPage, int pageSize);
+    List<CustomerInfoDto> findPageAllCustomer(int thisPage, int pageSize,String name, String phone, String conditionId);
+
+    List<CustomerInfo> findCustomerEmailNotNull();
 }

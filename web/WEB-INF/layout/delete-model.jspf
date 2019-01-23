@@ -28,6 +28,23 @@
 	function deleteOne(code, id) {
 		$("#actionDelete").attr("href","${CTX}/common?command=deleteOne&code="+code+"&id="+id);
 	}
+    // 全选反选
+    $('#totalCB').click(function(){
+        var isChecked = $(this).prop("checked");
+        $("tbody td :checkbox").prop("checked", isChecked);
+    });
+
+    // 获取所有选中的id
+    var arr = [];
+    function deleteBatch(code){
+        $.each($('tbody input:checkbox'),function(){
+            if(this.checked){
+                arr.push($(this).val());
+            }
+        });
+        console.info("删除："+arr.join(","))
+        window.location="${CTX}/common?command=deleteBatch&code="+code+"&ids="+arr.join(",");
+    };
 </script>
 
 

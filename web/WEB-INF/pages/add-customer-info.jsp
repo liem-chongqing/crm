@@ -16,8 +16,6 @@
         <h1 class="son-title">新增客户</h1>
         <div class="col-md-12 col-sm-12">
             <div class="search-box">
-                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addModal">新增</button>
-                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#deleteModel">批量删除</button>
             </div>
             <form action="${CTX}/customer?command=save" method="post">
                 <div class="form-group">

@@ -12,21 +12,30 @@
   <div class="container-main">
     <h1 class="son-title">客户信息</h1>
     <div class="search-box">
-        <form class="form-inline">
+        <form action="${CTX}/customer" method="get" class="form-inline">
+            <input type="hidden" name="command" value="showCustomer"/>
             <div class="form-group form-group-sm">
-                <label >工号</label>
-                <input type="email" class="form-control" placeholder="请输入工号">
+                <label >姓名</label>
+                <input type="text" name="name" value="${name}" class="form-control" placeholder="请输入客户姓名">
             </div>
             <div class="form-group form-group-sm">
-                <label >性别</label>
-                <select class="form-control">
-                    <option>不限</option>
-                    <option>男</option>
-                    <option>女</option>
+                <label >电话</label>
+                <input type="text" name="phone" value="${phone}" class="form-control" placeholder="请输入电话">
+            </div>
+            <div class="form-group form-group-sm">
+                <label >客户状态</label>
+                <select class="form-control" name="conditionId">
+                    <option value="">-请选择-</option>
+                    <c:forEach items="${dicItems}" var="dic">
+                        <option value="${dic.id}">${dic.name}</option>
+                    </c:forEach>
                 </select>
             </div>
             <button type="submit" class="btn btn-default btn-sm">搜索</button>
         </form>
+    </div>
+    <div class="form-group">
+        <button onclick="deleteBatch('customer_info')" class="btn btn-success">批量删除</button>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered text-center">
@@ -50,7 +59,7 @@
             <tbody>
                 <c:forEach varStatus="v" items="${pageModel.pageList}" var="customer">
                 <tr>
-                    <td><input type="checkbox"></td>
+                    <td><input value="${customer.id}" type="checkbox"></td>
                     <td>${(pageModel.thisPage-1)*pageModel.pageSize+v.count}</td>
                     <td>${customer.conditionName}</td>
                     <td>${customer.sourceName}</td>
@@ -76,13 +85,14 @@
         <div class="page-info">当前是第${pageModel.thisPage}页，共${pageModel.totalPage}页，共${pageModel.totalNum}条数据</div>
         <ul class="pager">
             <c:if test="${pageModel.thisPage > 1}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageModel.thisPage-1}">&larr; 上一页</a></li>
+                <li><a href="${CTX}/customer?command=showCustomer&thisPage=${pageModel.thisPage-1}&name=${name}&phone=${phone}&conditionId=${conditionId}">&larr; 上一页</a></li>
             </c:if>
             <c:if test="${pageModel.thisPage < pageModel.totalPage}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageModel.thisPage+1}">下一页 &rarr;</a></li>
+                <li><a href="${CTX}/customer?command=showCustomer&thisPage=${pageModel.thisPage+1}&name=${name}&phone=${phone}&conditionId=${conditionId}">下一页 &rarr;</a></li>
             </c:if>
         </ul>
     </div>
+
   </div>
 
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>

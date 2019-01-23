@@ -91,6 +91,34 @@
         "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
+  },{
+    "code": "6000",
+    "name": "邮件管理",
+    "url": "#none",
+    "icon": "glyphicon glyphicon-envelope",
+    "child": [
+      {
+        "code": "6002",
+        "name": "查看邮件",
+        "url": "mail?command=showMail",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },{
+        "code": "6001",
+        "name": "发邮件",
+        "url": "mail?command=showSend",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },{
+        "code": "6003",
+        "name": "草稿箱",
+        "url": "mail?command=showDrafts",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },{
+        "code": "6004",
+        "name": "已删除",
+        "url": "mail?command=showDelete",
+        "icon": "glyphicon glyphicon-chevron-right"
+      }
+    ]
   }
 
 ]

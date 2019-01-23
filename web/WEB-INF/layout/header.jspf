@@ -6,9 +6,9 @@
 		<c:if test="${not empty user}">
 			<div class="user-info">
 				<a href="javascript:;">欢迎你，${user.name }</a>
-				<span>&nbsp;|&nbsp;</span>
-				<a href="${ctx}/user?command=refresh" title="刷新"><span class="glyphicon glyphicon-refresh"></span></a>
-				<span>&nbsp;|&nbsp;</span>
+				<%--<span>&nbsp;|&nbsp;</span>--%>
+				<%--<a href="${ctx}/user?command=refresh" title="刷新"><span class="glyphicon glyphicon-refresh"></span></a>--%>
+				<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 				<a href="${ctx}/user?command=out" >注销</a>
 			</div>
 		</c:if>

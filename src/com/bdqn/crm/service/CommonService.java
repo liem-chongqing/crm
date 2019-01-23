@@ -21,4 +21,10 @@ public interface CommonService {
      */
     int deleteOneById(String tableName, long id);
 
+    /**
+     * 批量删除数据
+     * @param ids
+     * @return
+     */
+    int deleteBatch(String tableName, String ids);
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class CustomerInfo {
     private Long id;
-    //客户状态ID，引用T_CUSTOMER_CONDITION表主键
+    // 客户状态ID，引用T_CUSTOMER_CONDITION表主键
     private Integer conditionId;
     // 客户来源ID，引用T_CUSTOMER_SOURCE表主键
     private Integer sourceId;

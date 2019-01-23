@@ -2,8 +2,6 @@ package com.bdqn.crm.service;
 
 import com.bdqn.crm.dto.CustomerInfoDto;
 import com.bdqn.crm.entity.CustomerInfo;
-import com.bdqn.crm.entity.DicItem;
-import com.bdqn.crm.entity.UserInfo;
 
 import java.util.List;
 
@@ -24,5 +22,11 @@ public interface CustomerService {
      * @param pageSize
      * @return
      */
-    List<CustomerInfoDto> findPageAllCustomer(int i, int pageSize);
+    List<CustomerInfoDto> findPageAllCustomer(int thisPage, int pageSize, String name, String phone,String conditionId);
+
+    /**
+     * 查询所有邮箱不为空的客户信息
+     * @return
+     */
+    List<CustomerInfo> findCustomerEmailNotNull();
 }

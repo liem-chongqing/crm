@@ -17,4 +17,9 @@ public class CommonServiceImpl implements CommonService {
     public int deleteOneById(String tableName, long id) {
         return commonDao.deleteOneById(tableName, id);
     }
+
+    @Override
+    public int deleteBatch(String tableName, String ids) {
+        return commonDao.deleteBatch(tableName, ids);
+    }
 }

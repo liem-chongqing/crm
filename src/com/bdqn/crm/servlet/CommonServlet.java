@@ -54,10 +54,41 @@ public class CommonServlet extends BaseServlet {
                 return "redirect:house?command=showHouseInfo";
             case "notice_info":
                 return "redirect:notice?command=showNotice";
+            case "email_info":
+                return "redirect:mail?command=showMail";
         }
         return "redirect:login.jsp";
     }
 
+    /**
+     * 批量删除
+     * @param request
+     * @param response
+     * @return
+     */
+    public String deleteBatch(HttpServletRequest request, HttpServletResponse response){
+        CommonService commonService = new CommonServiceImpl();
+        String tableName = request.getParameter("code");
+        String ids = request.getParameter("ids");
+        int result = commonService.deleteBatch(tableName, ids);
+        switch (tableName){
+            case "customer_info":
+                return "redirect:customer?command=showCustomer";
+            case "user_info":
+                return "redirect:user?command=showUser";
+            case "dic_type":
+                return "redirect:dic?command=getAllType";
+            case "dic_item":
+                return "redirect:dic?command=getAllItem";
+            case "houser_info":
+                return "redirect:house?command=showHouseInfo";
+            case "notice_info":
+                return "redirect:notice?command=showNotice";
+            case "email_info":
+                return "redirect:mail?command=showMail";
+        }
+        return "redirect:login.jsp";
+    }
 
     public String showHome(HttpServletRequest request, HttpServletResponse response){
         return  "show-home";

@@ -85,6 +85,11 @@ public class CustomerServlet extends BaseServlet {
      * @return
      */
     public String showCustomer(HttpServletRequest request, HttpServletResponse response){
+        // 获取条件查询参数
+        String name = request.getParameter("name") != null ? request.getParameter("name"):"" ;
+        String phone = request.getParameter("phone") != null ? request.getParameter("phone"):"" ;
+        String conditionId = request.getParameter("conditionId") != null ? request.getParameter("conditionId"):"" ;
+        // 分页
         CommonService commonService = new CommonServiceImpl();
         CustomerService customerService = new CustomerServiceImpl();
         PageUtil<CustomerInfoDto> pageUtil = new PageUtil<>();
@@ -101,9 +106,20 @@ public class CustomerServlet extends BaseServlet {
         // 获取总页数
         int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
         pageUtil.setTotalPage(totalPage);
-        List<CustomerInfoDto> customerInfos = customerService.findPageAllCustomer((pageUtil.getThisPage()-1) * pageUtil.getPageSize(), pageUtil.getPageSize());
+        int thisPageTo = (pageUtil.getThisPage()-1) * pageUtil.getPageSize();
+        int pageSize = pageUtil.getPageSize();
+        List<CustomerInfoDto> customerInfos = customerService.findPageAllCustomer(thisPageTo,pageSize,name, phone,conditionId);
         pageUtil.setPageList(customerInfos);
         request.setAttribute("pageModel", pageUtil);
+        // 返回数据状态
+        // 客户状态 CUSTOMER_CONDITION
+        DicService dicService = new DicServiceImpl();
+        List<DicItem> dicItems3 = dicService.findDicType("CUSTOMER_CONDITION");
+        request.setAttribute("dicItems", dicItems3);
+        // 查询数据回显
+        request.setAttribute("name",name);
+        request.setAttribute("phone",phone);
+        request.setAttribute("conditionId",conditionId);
         return "show-customer";
     }
 
