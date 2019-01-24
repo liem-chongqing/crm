@@ -13,7 +13,7 @@
     <h1 class="son-title">公告信息</h1>
     <div class="search-box">
         <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addModal">新增</button>
-        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#deleteModel">批量删除</button>
+        <button class="btn btn-success btn-sm" onclick="deleteBatch('notice_info')" >批量删除</button>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered text-center">
@@ -33,7 +33,7 @@
             <tbody>
             <c:forEach varStatus="v" items="${pageUtil.pageList}" var="notice">
                 <tr>
-                    <td><input type="checkbox"></td>
+                    <td><input value="${notice.id}" type="checkbox"></td>
                     <td>${(pageUserList.thisPage-1)*pageUserList.pageSize+v.count}</td>
                     <td>${notice.userName}</td>
                     <td>${notice.item}</td>

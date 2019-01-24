@@ -27,14 +27,32 @@
     "child": [
       {
         "code": "2001",
+        "name": "新增客户",
+        "url": "customer?command=add",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },
+      {
+        "code": "2002",
         "name": "查看客户",
         "url": "customer?command=showCustomer",
         "icon": "glyphicon glyphicon-chevron-right"
       },
       {
-        "code": "2002",
-        "name": "新增客户",
-        "url": "customer?command=add",
+        "code": "2003",
+        "name": "关怀记录",
+        "url": "customer?command=showCare",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },
+      {
+        "code": "2004",
+        "name": "联系记录",
+        "url": "customer?command=showLinkreord",
+        "icon": "glyphicon glyphicon-chevron-right"
+      },
+      {
+        "code": "2005",
+        "name": "联系人记录",
+        "url": "customer?command=showLinkman",
         "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
@@ -106,16 +124,6 @@
         "code": "6001",
         "name": "发邮件",
         "url": "mail?command=showSend",
-        "icon": "glyphicon glyphicon-chevron-right"
-      },{
-        "code": "6003",
-        "name": "草稿箱",
-        "url": "mail?command=showDrafts",
-        "icon": "glyphicon glyphicon-chevron-right"
-      },{
-        "code": "6004",
-        "name": "已删除",
-        "url": "mail?command=showDelete",
         "icon": "glyphicon glyphicon-chevron-right"
       }
     ]

@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
+/**
+ * 菜单组装
+ */
 public class MenuUtil {
 
     public static final String SYS_MENU = "sys_menu.json";
@@ -18,7 +21,6 @@ public class MenuUtil {
         InputStream inStream = MenuUtil.class.getClassLoader().getResourceAsStream(menuType);
         try {
             String jsonStr = inputStream2String(inStream);
-            System.out.println(jsonStr);
             return JSON.parseArray(jsonStr,MenuModel.class);
         } catch (IOException e) {
             e.printStackTrace();

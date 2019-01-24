@@ -1,16 +1,16 @@
 package com.bdqn.crm.service;
 
-/**
+import com.bdqn.crm.entity.CustomerInfo; /**
  * 共有接口方法
  */
 public interface CommonService {
 
     /**
      * 根据表名查询总数据量
-     * @param tableName
+     * @param sql
      * @return
      */
-    int getTotalNumber(String tableName);
+    int getTotalNumber(String sql, String... pram);
 
 
     /**
@@ -27,4 +27,12 @@ public interface CommonService {
      * @return
      */
     int deleteBatch(String tableName, String ids);
+
+    /**
+     * 修改数据
+     * @param tableName
+     * @param object
+     * @return
+     */
+    int update(String tableName, Object object);
 }

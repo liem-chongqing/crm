@@ -14,26 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DicDaoImpl implements DicDao {
-    @Override
-    public int getTotalNumber(String tableName) {
-        String sql = "SELECT COUNT(id) AS total FROM "+ tableName;
-        Connection connection = DBUtil.getConnection();
-        ResultSet resultSet=null;
-        PreparedStatement preparedStatement=null;
-        int result = 0;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                result = resultSet.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            DBUtil.close(resultSet, preparedStatement, connection);
-        }
-        return result;
-    }
+
 
     @Override
     public List<DicType> getAllType(int thisPage, int pageSize) {

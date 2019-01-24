@@ -25,7 +25,6 @@ public class EncodingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("开始过滤请求数据的编码……");
         // 转型为与协议相关对象
         HttpServletRequest req = (HttpServletRequest) request;
         // 获取请求方法

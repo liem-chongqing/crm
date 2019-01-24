@@ -9,8 +9,8 @@ public class CommonServiceImpl implements CommonService {
     private CommonDao commonDao = new CommonDaoImpl();
 
     @Override
-    public int getTotalNumber(String tableName) {
-        return commonDao.getTotalNumber(tableName);
+    public int getTotalNumber(String sql, String... pram) {
+        return commonDao.getTotalNumber(sql, pram);
     }
 
     @Override
@@ -21,5 +21,10 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public int deleteBatch(String tableName, String ids) {
         return commonDao.deleteBatch(tableName, ids);
+    }
+
+    @Override
+    public int update(String tableName, Object object) {
+        return commonDao.update(tableName, object);
     }
 }

@@ -3,7 +3,9 @@ package com.bdqn.crm.servlet;
 import com.bdqn.crm.dto.DicItemDto;
 import com.bdqn.crm.entity.DicItem;
 import com.bdqn.crm.entity.DicType;
+import com.bdqn.crm.service.CommonService;
 import com.bdqn.crm.service.DicService;
+import com.bdqn.crm.service.impl.CommonServiceImpl;
 import com.bdqn.crm.service.impl.DicServiceImpl;
 import com.bdqn.crm.util.PageUtil;
 
@@ -54,8 +56,10 @@ public class DicServlet extends  BaseServlet {
      */
     public String getAllType(HttpServletRequest request, HttpServletResponse response){
         DicService dicService = new DicServiceImpl();
+        CommonService commonService = new CommonServiceImpl();
         PageUtil<DicType> pageUtil = new PageUtil<>();
-        int totalNumber = dicService.getTotalNumber("dic_type");
+        String sql =  "SELECT COUNT(id) AS total FROM dic_type ";
+        int totalNumber = commonService.getTotalNumber(sql);
         pageUtil.setTotalNum(totalNumber);
         String thisPage = request.getParameter("thisPage");
         if(null != thisPage){
@@ -79,8 +83,10 @@ public class DicServlet extends  BaseServlet {
      */
     public String getAllItem(HttpServletRequest request, HttpServletResponse response){
         DicService dicService = new DicServiceImpl();
+        CommonService commonService = new CommonServiceImpl();
         PageUtil<DicItemDto> pageUtil = new PageUtil<>();
-        int totalNumber = dicService.getTotalNumber("dic_item");
+        String sql =  "SELECT COUNT(id) AS total FROM dic_item ";
+        int totalNumber = commonService.getTotalNumber(sql);
         pageUtil.setTotalNum(totalNumber);
         String thisPage = request.getParameter("thisPage");
         if(null != thisPage){

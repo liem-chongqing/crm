@@ -1,11 +1,13 @@
 package com.bdqn.crm.servlet;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bdqn.crm.constant.Constants;
+import com.bdqn.crm.dto.CustomerCareDto;
 import com.bdqn.crm.dto.CustomerInfoDto;
-import com.bdqn.crm.entity.CustomerInfo;
-import com.bdqn.crm.entity.DicItem;
-import com.bdqn.crm.entity.UserInfo;
+import com.bdqn.crm.dto.CustomerLinkmanDto;
+import com.bdqn.crm.dto.CustomerLinkreordDto;
+import com.bdqn.crm.entity.*;
 import com.bdqn.crm.service.CommonService;
 import com.bdqn.crm.service.CustomerService;
 import com.bdqn.crm.service.DicService;
@@ -22,14 +24,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 用户模块
+ * 客户模块
  */
 @WebServlet("/customer")
 public class CustomerServlet extends BaseServlet {
+
+
 
     /**
      * 跳转到客户新增页面
@@ -38,20 +44,6 @@ public class CustomerServlet extends BaseServlet {
      * @return
      */
     public String add(HttpServletRequest request, HttpServletResponse response){
-        DicService dicService = new DicServiceImpl();
-        UserService userService = new UserServiceImpl();
-        // 客户来源 CUSTOMER_SOURCE
-        List<DicItem> dicItems1 = dicService.findDicType("CUSTOMER_SOURCE");
-        // 客户类型 CUSTOMER_TYPE
-        List<DicItem> dicItems2 = dicService.findDicType("CUSTOMER_TYPE");
-        // 客户状态 CUSTOMER_CONDITION
-        List<DicItem> dicItems3 = dicService.findDicType("CUSTOMER_CONDITION");
-        // 查询所有员工
-        List<UserInfo> userInfos = userService.findAllUserByEnable(Constants.State.ENABLE);
-        request.setAttribute("sources", dicItems1);
-        request.setAttribute("types", dicItems2);
-        request.setAttribute("conditions", dicItems3);
-        request.setAttribute("userInfos", userInfos);
         return "add-customer-info";
     }
 
@@ -94,7 +86,8 @@ public class CustomerServlet extends BaseServlet {
         CustomerService customerService = new CustomerServiceImpl();
         PageUtil<CustomerInfoDto> pageUtil = new PageUtil<>();
         // 查询数据库总条数
-        int totalNumber = commonService.getTotalNumber("customer_info");
+        String sql = "SELECT COUNT(id) AS total FROM customer_info WHERE  `name` like ? AND mobile like ?  AND condition_id like ?";
+        int totalNumber = commonService.getTotalNumber(sql, "%"+name+"%", "%"+phone+"%", "%"+conditionId+"%");
         // 得到数据的总条数后装给pagedemo模型
         pageUtil.setTotalNum(totalNumber);
         // 获取前台的分页参数
@@ -124,7 +117,187 @@ public class CustomerServlet extends BaseServlet {
     }
 
 
+    /**
+     * 根据id查询客户详情
+     * @param request
+     * @param response
+     * @return
+     */
+    public void customerInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String customerId = request.getParameter("customerId");
+        if(null!=customerId){
+            CustomerService customerService = new CustomerServiceImpl();
+            CustomerInfoDto customerInfoDto = customerService.getCustomerInfoByCustomerId(Integer.parseInt(customerId));
+            PrintWriter out = response.getWriter();
+            out.write(JSON.toJSONString(customerInfoDto));
+            out.flush();
+            out.close();
+        }
+
+    }
 
 
+    /**
+     * 显示客户关怀
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    public String showCare(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 分页
+        CommonService commonService = new CommonServiceImpl();
+        CustomerService customerService = new CustomerServiceImpl();
+        PageUtil<CustomerCareDto> pageUtil = new PageUtil<>();
+        // 查询数据库总条数
+        String sql = "SELECT COUNT(id) AS total FROM customer_care";
+        int totalNumber = commonService.getTotalNumber(sql);
+        // 得到数据的总条数后装给pagedemo模型
+        pageUtil.setTotalNum(totalNumber);
+        // 获取前台的分页参数
+        String thisPage = request.getParameter("thisPage");
+        // 如果不为null的话，则转型
+        if(null != thisPage){
+            pageUtil.setThisPage(Integer.parseInt(thisPage));
+        }
+        // 获取总页数
+        int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
+        pageUtil.setTotalPage(totalPage);
+        int thisPageTo = (pageUtil.getThisPage()-1) * pageUtil.getPageSize();
+        int pageSize = pageUtil.getPageSize();
+        List<CustomerCareDto> customerCareDtos = customerService.findPageAllCustomerCare(thisPageTo,pageSize);
+        pageUtil.setPageList(customerCareDtos);
+        request.setAttribute("pageUtil", pageUtil);
+        return "show-customer-care";
+    }
+
+    /**
+     * 查询所有客户信息
+     * @param request
+     * @param response
+     */
+    public void getAllCustomerInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CustomerService customerService = new CustomerServiceImpl();
+        List<CustomerInfo> customerInfoList = customerService.getAllCustomerInfo();
+        PrintWriter out = response.getWriter();
+        out.write(JSON.toJSONString(customerInfoList));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 保存关怀信息
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public String saveCare(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CustomerCare customerCare = parameterBean(request, CustomerCare.class);
+        System.out.println("customerCare:"+customerCare);
+        CustomerService customerService = new CustomerServiceImpl();
+        customerCare.setUsed(Constants.State.ENABLE);
+        int result = customerService.saveCare(customerCare);
+        return "redirect:customer?command=showCare";
+    }
+
+    /**
+     * 显示客户联系记录
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public String showLinkreord(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 分页
+        CommonService commonService = new CommonServiceImpl();
+        CustomerService customerService = new CustomerServiceImpl();
+        PageUtil<CustomerLinkreordDto> pageUtil = new PageUtil<>();
+        // 查询数据库总条数
+        String sql = "SELECT COUNT(id) AS total FROM customer_linkreord";
+        int totalNumber = commonService.getTotalNumber(sql);
+        // 得到数据的总条数后装给pagedemo模型
+        pageUtil.setTotalNum(totalNumber);
+        // 获取前台的分页参数
+        String thisPage = request.getParameter("thisPage");
+        // 如果不为null的话，则转型
+        if(null != thisPage){
+            pageUtil.setThisPage(Integer.parseInt(thisPage));
+        }
+        // 获取总页数
+        int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
+        pageUtil.setTotalPage(totalPage);
+        int thisPageTo = (pageUtil.getThisPage()-1) * pageUtil.getPageSize();
+        int pageSize = pageUtil.getPageSize();
+        List<CustomerLinkreordDto> CustomerLinkreordDtos = customerService.findPageAllCustomerLinkreord(thisPageTo,pageSize);
+        pageUtil.setPageList(CustomerLinkreordDtos);
+        request.setAttribute("pageUtil", pageUtil);
+        return "show-customer-linkreord";
+    }
+
+    /**
+     * 保存客户联系记录信息
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public String saveLinkreord(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CustomerLinkreord customerLinkreord = parameterBean(request, CustomerLinkreord.class);
+        System.out.println("customerCare:"+customerLinkreord);
+        CustomerService customerService = new CustomerServiceImpl();
+        customerLinkreord.setUsed(Constants.State.ENABLE);
+        int result = customerService.saveLinkreord(customerLinkreord);
+        return "redirect:customer?command=showLinkreord";
+    }
+
+    /**
+     * 显示联系人信息
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public String showLinkman(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 分页
+        CommonService commonService = new CommonServiceImpl();
+        CustomerService customerService = new CustomerServiceImpl();
+        PageUtil<CustomerLinkmanDto> pageUtil = new PageUtil<>();
+        // 查询数据库总条数
+        String sql = "SELECT COUNT(id) AS total FROM customer_linkman";
+        int totalNumber = commonService.getTotalNumber(sql);
+        // 得到数据的总条数后装给pagedemo模型
+        pageUtil.setTotalNum(totalNumber);
+        // 获取前台的分页参数
+        String thisPage = request.getParameter("thisPage");
+        // 如果不为null的话，则转型
+        if(null != thisPage){
+            pageUtil.setThisPage(Integer.parseInt(thisPage));
+        }
+        // 获取总页数
+        int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
+        pageUtil.setTotalPage(totalPage);
+        int thisPageTo = (pageUtil.getThisPage()-1) * pageUtil.getPageSize();
+        int pageSize = pageUtil.getPageSize();
+        List<CustomerLinkmanDto> CustomerLinkmanDtos = customerService.findPageAllCustomerLinkman(thisPageTo,pageSize);
+        pageUtil.setPageList(CustomerLinkmanDtos);
+        request.setAttribute("pageUtil", pageUtil);
+        return "show-customer-linkman";
+    }
+
+    /**
+     * 保存联系人信息
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public String saveLinkman(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CustomerLinkman CustomerLinkman = parameterBean(request, CustomerLinkman.class);
+        System.out.println("CustomerLinkman:"+CustomerLinkman);
+        CustomerService customerService = new CustomerServiceImpl();
+        CustomerLinkman.setUsed(Constants.State.ENABLE);
+        int result = customerService.saveLinkman(CustomerLinkman);
+        return "redirect:customer?command=showLinkman";
+    }
 
 }

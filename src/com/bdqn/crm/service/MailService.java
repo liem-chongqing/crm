@@ -20,4 +20,21 @@ public interface MailService {
      * @return
      */
     List<EmailInfoDto> findPageAllEmail(int thisPage, int pageSize);
+
+
+    /**
+     * 根据id得到邮件信息
+     * @param mailId
+     * @return
+     */
+    EmailInfoDto getEmailInfoByMailId(int mailId);
+
+
+    /**
+     * 修改邮件的发送状态
+     * @param send
+     * @param id
+     * @return
+     */
+    int modifyMialSendStateByMailId(String send, Long id);
 }

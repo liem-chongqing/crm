@@ -1,12 +1,19 @@
 package com.bdqn.crm.servlet;
 
 
+import com.bdqn.crm.constant.Constants;
+import com.bdqn.crm.entity.DicItem;
 import com.bdqn.crm.entity.UserInfo;
+import com.bdqn.crm.service.CommonService;
+import com.bdqn.crm.service.DicService;
 import com.bdqn.crm.service.UserService;
+import com.bdqn.crm.service.impl.CommonServiceImpl;
+import com.bdqn.crm.service.impl.DicServiceImpl;
 import com.bdqn.crm.service.impl.UserServiceImpl;
 import com.bdqn.crm.util.MenuUtil;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,6 +28,29 @@ import com.bdqn.crm.util.PageUtil;
  */
 @WebServlet("/user")
 public class UserServlet extends BaseServlet {
+
+    /**
+     * 初始系统所需信息
+     * @param request
+     * @param response
+     */
+    public void initDicInfo(HttpServletRequest request, HttpServletResponse response){
+        DicService dicService = new DicServiceImpl();
+        UserService userService = new UserServiceImpl();
+        // 客户来源 CUSTOMER_SOURCE
+        List<DicItem> dicItems1 = dicService.findDicType("CUSTOMER_SOURCE");
+        // 客户类型 CUSTOMER_TYPE
+        List<DicItem> dicItems2 = dicService.findDicType("CUSTOMER_TYPE");
+        // 客户状态 CUSTOMER_CONDITION
+        List<DicItem> dicItems3 = dicService.findDicType("CUSTOMER_CONDITION");
+        // 查询所有员工
+        List<UserInfo> userInfos = userService.findAllUserByEnable(Constants.State.ENABLE);
+        HttpSession session = request.getSession();
+        session.setAttribute("sources", dicItems1);
+        session.setAttribute("types", dicItems2);
+        session.setAttribute("conditions", dicItems3);
+        session.setAttribute("userInfos", userInfos);
+    }
 
     public String addUser(HttpServletRequest request, HttpServletResponse response){
         return "add-user";
@@ -61,10 +91,15 @@ public class UserServlet extends BaseServlet {
      * @return
      */
     public String showUser(HttpServletRequest request, HttpServletResponse response){
+        // 获取条件查询参数
+        String name = request.getParameter("name") != null ? request.getParameter("name"):"" ;
+        String num = request.getParameter("num") != null ? request.getParameter("num"):"" ;
         UserService userService = new UserServiceImpl();
+        CommonService commonService = new CommonServiceImpl();
         PageUtil<UserInfo> pageUtil = new PageUtil<>();
         // 查询数据库总条数
-        int totalNumber = userService.getTotalNumber();
+        String sql = "SELECT COUNT(id) AS total FROM user_info WHERE  num like ? AND `name` like ? ";
+        int totalNumber = commonService.getTotalNumber(sql, "%"+num+"%", "%"+name+"%");
         // 得到数据的总条数后装给pagedemo模型
         pageUtil.setTotalNum(totalNumber);
         // 获取前台的分页参数
@@ -76,9 +111,14 @@ public class UserServlet extends BaseServlet {
         // 获取总页数
         int totalPage = (pageUtil.getTotalNum() -1)/pageUtil.getPageSize()+1;
         pageUtil.setTotalPage(totalPage);
-        List<UserInfo> userList = userService.findPageAllUser((pageUtil.getThisPage()-1) * pageUtil.getPageSize(), pageUtil.getPageSize());
+        int thisPageNo = (pageUtil.getThisPage()-1) * pageUtil.getPageSize();
+        int pageSize = pageUtil.getPageSize();
+        List<UserInfo> userList = userService.findPageAllUser(thisPageNo, pageSize, num, name);
         pageUtil.setPageList(userList);
         request.setAttribute("pageUserList", pageUtil);
+        // 回显查询数据
+        request.setAttribute("name",name);
+        request.setAttribute("num",num);
         return "show-user";
     }
 
@@ -93,16 +133,31 @@ public class UserServlet extends BaseServlet {
      * @return
      */
     public String login(HttpServletRequest req, HttpServletResponse resp) {
+        String rememberMe = req.getParameter("rememberMe");
         String code = req.getParameter("code");
         String password = req.getParameter("password");
         UserService userService = new UserServiceImpl();
         UserInfo user = userService.login(code, password);
         System.out.println(user);
         if(null != user){
+            // 记住密码
+            if("on".equals(rememberMe)){
+                Cookie cookie = new Cookie("cookieUserInfo",code+"-"+password);
+                // 设置过期时间
+                cookie.setMaxAge(60 * 24);
+                // 存储
+                resp.addCookie(cookie);
+            }else{
+                Cookie cookie = new Cookie("cookieUserInfo","");
+                resp.addCookie(cookie);
+            }
+
             HttpSession session = req.getSession();
             // 管理员菜单
             req.setAttribute("menu", MenuUtil.getSysMenu(MenuUtil.SYS_MENU));
             session.setAttribute("user", user);
+            // 初始化数据字典信息
+            initDicInfo(req, resp);
             return "home";
         }
         return  "redirect:login.jsp";

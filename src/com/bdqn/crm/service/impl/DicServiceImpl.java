@@ -13,10 +13,6 @@ import java.util.List;
 
 public class DicServiceImpl implements DicService {
     private DicDao dicDao = new DicDaoImpl();
-    @Override
-    public int getTotalNumber(String tableName) {
-        return dicDao.getTotalNumber(tableName);
-    }
 
     @Override
     public List<DicType> getAllType(int thisPage, int pageSize) {

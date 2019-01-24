@@ -42,7 +42,8 @@ public class Constants {
         int DISABLE = 1;        // 未激活
     }
 
-    public interface  Code{
-        
+    public interface  Email{
+        String SEND = "0";          // 发送
+        String DRAFTS = "1";        // 存入草稿箱
     }
 }

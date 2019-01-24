@@ -10,4 +10,9 @@ public interface MailDao {
     int savaSendInfo(EmailInfo emailInfo);
 
     List<EmailInfoDto> findPageAllEmail(int thisPage, int pageSize);
+
+
+    EmailInfoDto getEmailInfoByMailId(Integer mailId);
+
+    int modifyMialSendStateByMailId(String state, Long id);
 }

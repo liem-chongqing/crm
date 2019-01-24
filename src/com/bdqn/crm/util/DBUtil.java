@@ -1,5 +1,6 @@
 package com.bdqn.crm.util;
 
+import com.bdqn.crm.entity.HouseInfo;
 import com.bdqn.crm.entity.UserInfo;
 import com.bdqn.crm.service.UserService;
 import com.bdqn.crm.service.impl.UserServiceImpl;
@@ -96,7 +97,6 @@ public class DBUtil {
 							if("String".equalsIgnoreCase(type)){
 								valueName.append("'"+str2+"'"+",");
 							} else if("Date".equalsIgnoreCase(type) ){
-//								valueName.append("NOW(),");
 								SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 								SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 								valueName.append("'"+sdf2.format(sdf.parse(str2))+"',");
@@ -309,6 +309,105 @@ public class DBUtil {
 
 
 	/**
+	 * 更新对象信息，有值的字段会拼接，id默认拼接为查询条件
+	 * 注：内部固定键值 table_name -- 表名称
+	 * @param object -- 映射对象的sql语句
+	 * @return 受影响的行数
+	 */
+	public static int modify(String tableName, Object object) {
+		// 得到对象的类
+		Class c = object.getClass();
+		// 得到对象中所有的方法
+		Method[] methods = c.getMethods();
+		// 得到对象中所有的属性
+		Field[] fields = c.getFields();
+		// 得到对象类的名字
+		String cName = c.getName();
+		// 表名(默认为类名)
+		StringBuffer sql = new StringBuffer("update ");
+		sql.append(tableName) ;
+		List<String> columList = new ArrayList<String>();//字段集合
+
+		List<String> argsList = new ArrayList<String>();//?集合
+
+		List<Object> valueList = new ArrayList<Object>();//值集合
+		//查询条件
+		List  where_columList = new ArrayList<String>();//查询条件_字段集合
+		List<String> where_argsList = new ArrayList<String>();//查询条件_?集合
+		List<Object> where_valueList = new ArrayList<Object>();//查询条件_值集合
+		for (Method method : methods) {
+			String mName = method.getName();
+			if (mName.startsWith("get") && !mName.startsWith("getClass")) {
+				//字段名称
+				String fieldName = mName.substring(3, mName.length());
+				//不区分大小写
+				try {
+					Object value = method.invoke(object, null);
+					//有值的字段加入
+					if(null != value){
+						columList.add(BeanMapConvertUtil.camelhumpToUnderline(fieldName));
+						argsList.add("?");
+						valueList.add(value);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		int id_index = -1;//排除id的索引位
+		//处理where条件
+		String columNameTemp;
+		String argsTemp;
+		Object valueTemp;
+		for (int i = 0; i < columList.size(); i++) {
+			columNameTemp = columList.get(i);
+			argsTemp = argsList.get(i);
+			valueTemp = valueList.get(i);
+			//加入id字段
+			if(columNameTemp.equals("id")){
+				where_columList.add(columNameTemp);
+				where_argsList.add("?");
+				where_valueList.add(valueTemp);
+				id_index = i;
+			}
+		}
+		//排除id索引对应的键值
+		if(id_index > -1){
+			columList.remove(id_index);
+			argsList.remove(id_index);
+			valueList.remove(id_index);
+		}
+		//遍历拼接条件
+		for (int i = 0; i < columList.size(); i++) {
+			if(i == 0){
+				sql.append(" set " + columList.get(i) + " = "+ argsList.get(i));
+			}else{
+				sql.append(" , " + columList.get(i) + " = "+ argsList.get(i));
+			}
+		}
+		//拼接sql where条件
+		for(int i = 0;i < where_columList.size() ; i++){
+			if(i == 0){
+				sql.append(" where ").append(where_columList.get(i) +" = "+ where_argsList.get(i));
+			}else{
+				sql.append(" and ").append(where_columList.get(i) +" = "+ where_argsList.get(i));
+			}
+		}
+		//值集合，去除占位null
+		valueList.addAll(where_valueList);
+		List<Object> finalValueList = new ArrayList<Object>();//最终值集合
+		for(Object objTemp:valueList){
+			if(null != objTemp){
+				finalValueList.add(objTemp);
+			}
+		}
+		Object[] args = finalValueList.toArray();
+		int row = 0;
+		row = update(sql.toString(), args);
+		return row;
+	}
+
+	/**
 	 * 关闭resultSet
 	 * @param resultSet
 	 */
@@ -372,6 +471,7 @@ public class DBUtil {
 		close(preparedStatement);
 		close(connection);
 	}
+
 
 
 

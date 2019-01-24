@@ -12,21 +12,21 @@
   <div class="container-main">
     <h1 class="son-title">员工信息</h1>
     <div class="search-box">
-        <form class="form-inline">
-            <div class="form-group form-group-sm">
-                <label >工号</label>
-                <input type="email" class="form-control" placeholder="请输入工号">
-            </div>
-            <div class="form-group form-group-sm">
-                <label >性别</label>
-                <select class="form-control">
-                    <option>不限</option>
-                    <option>男</option>
-                    <option>女</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-default btn-sm">搜索</button>
+        <form action="${CTX}/user" method="POST" class="form-inline">
+          <input type="hidden" name="command" value="showUser"/>
+          <div class="form-group form-group-sm">
+              <label >工号</label>
+              <input type="text" name="num" value="${num}" class="form-control" placeholder="请输入客户姓名">
+          </div>
+          <div class="form-group form-group-sm">
+              <label >姓名</label>
+              <input type="text" name="name" value="${name}" class="form-control" placeholder="请输入电话">
+          </div>
+          <button type="submit" class="btn btn-default btn-sm">搜索</button>
         </form>
+    </div>
+    <div class="form-group">
+      <button onclick="deleteBatch('user_info')" class="btn btn-success">批量删除</button>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered text-center">
@@ -49,7 +49,7 @@
             <tbody>
                 <c:forEach varStatus="v" items="${pageUserList.pageList}" var="pageUser">
                 <tr>
-                    <td><input type="checkbox"></td>
+                    <td><input value="${pageUser.id}" type="checkbox"></td>
                     <td>${(pageUserList.thisPage-1)*pageUserList.pageSize+v.count}</td>
                     <td>${pageUser.num}</td>
                     <td>${pageUser.roleName == 0 ? '管理员':'普通用户'}</td>
@@ -74,10 +74,10 @@
         <div class="page-info">当前是第${pageUserList.thisPage}页，共${pageUserList.totalPage}页，共${pageUserList.totalNum}条数据</div>
         <ul class="pager">
             <c:if test="${pageUserList.thisPage > 1}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUserList.thisPage-1}">&larr; 上一页</a></li>
+                <li><a href="${CTX}/user?command=showUser&num=${num}&name=${name}&thisPage=${pageUserList.thisPage-1}">&larr; 上一页</a></li>
             </c:if>
             <c:if test="${pageUserList.thisPage < pageUserList.totalPage}">
-                <li><a href="${CTX}/user?command=showUser&thisPage=${pageUserList.thisPage+1}">下一页 &rarr;</a></li>
+                <li><a href="${CTX}/user?command=showUser&num=${num}&name=${name}&thisPage=${pageUserList.thisPage+1}">下一页 &rarr;</a></li>
             </c:if>
         </ul>
     </div>
@@ -211,21 +211,5 @@
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
   <%@ include file="/WEB-INF/layout/delete-model.jspf"%>
-  <script  type="text/javascript" >
-      $(function () {
-          // 编辑提示
-          $("[data-toggle='tooltip']").tooltip();
-          //全选与反选方式二
-          $("#totalCB").click(function() {
-              var flag = this.checked;
-              $(":checkbox[type='checkbox']").attr('checked',flag);
-          });
-          //而且还实现了:当其中不勾选某一个选项的时候,则去掉全选复选框
-          $(":checkbox[type='checkbox']").click(function(){
-              $("#totalCB").attr('checked',
-              $(":checkbox[type='checkbox']").length==$(":checkbox[type='checkbox']:checked").length);
-          });
-      });
-  </script>
 </body>
 </html>

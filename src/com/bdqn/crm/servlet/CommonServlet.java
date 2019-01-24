@@ -19,6 +19,7 @@ import com.bdqn.crm.util.PageUtil;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,9 @@ import java.util.List;
  */
 @WebServlet("/common")
 public class CommonServlet extends BaseServlet {
+
+
+
 
     /**
      * 根据ID删除数据和表名删除数据
@@ -56,6 +60,12 @@ public class CommonServlet extends BaseServlet {
                 return "redirect:notice?command=showNotice";
             case "email_info":
                 return "redirect:mail?command=showMail";
+            case "customer_care":
+                return "redirect:customer?command=showCare";
+            case "customer_linkreord":
+                return "redirect:customer?command=showLinkreord";
+            case "customer_linkman":
+                return "redirect:customer?command=showLinkman";
         }
         return "redirect:login.jsp";
     }
@@ -86,11 +96,42 @@ public class CommonServlet extends BaseServlet {
                 return "redirect:notice?command=showNotice";
             case "email_info":
                 return "redirect:mail?command=showMail";
+            case "customer_care":
+                return "redirect:customer?command=showCare";
+            case "customer_linkreord":
+                return "redirect:customer?command=showLinkreord";
+            case "customer_linkman":
+                return "redirect:customer?command=showLinkman";
         }
         return "redirect:login.jsp";
     }
 
     public String showHome(HttpServletRequest request, HttpServletResponse response){
         return  "show-home";
+    }
+
+    /**
+     * 修改数据
+     * @param request
+     * @param response
+     * @return
+     */
+    public String modifyData(HttpServletRequest request, HttpServletResponse response){
+        String code = request.getParameter("code");
+        switch (code){
+            case "customer":
+                CustomerInfo customerInfo = parameterBean(request, CustomerInfo.class);
+                if(null != customerInfo.getId()){
+                    HttpSession session = request.getSession();
+                    UserInfo userInfo = (UserInfo) session.getAttribute("user");
+                    customerInfo.setUpdateMan(userInfo.getName());
+                    customerInfo.setUpdateTime(new Date());
+                    CommonService commonService = new CommonServiceImpl();
+                    commonService.update("customer_info", customerInfo);
+                }
+                return "redirect:customer?command=showCustomer";
+            default:
+                return "redirect:login.jsp";
+        }
     }
 }

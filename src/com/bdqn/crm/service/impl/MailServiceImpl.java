@@ -21,4 +21,15 @@ public class MailServiceImpl implements MailService {
     public List<EmailInfoDto> findPageAllEmail(int thisPage, int pageSize) {
         return mailDao.findPageAllEmail(thisPage, pageSize);
     }
+
+    @Override
+    public EmailInfoDto getEmailInfoByMailId(int mailId) {
+        return mailDao.getEmailInfoByMailId(mailId);
+    }
+
+    @Override
+    public int modifyMialSendStateByMailId(String state, Long id) {
+        return mailDao.modifyMialSendStateByMailId(state, id);
+    }
+
 }

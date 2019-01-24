@@ -10,9 +10,8 @@ public interface UserDao {
 
     int addUser(UserInfo userInfo);
 
-    int getTotalNumber();
 
-    List<UserInfo> findPageAllUser(int thisPage, int pageSize);
+    List<UserInfo> findPageAllUser(int thisPage, int pageSize, String num, String name);
 
     int save(UserInfo userInfo);
 

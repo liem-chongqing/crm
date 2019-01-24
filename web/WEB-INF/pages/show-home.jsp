@@ -16,44 +16,64 @@
       width: 100%;
       padding: 10px 0;
       text-align: center;
-      background-color: #EEEEEE;
+      background-color: rgba(0,0,0,.7);
       margin-right: 10px;
 
+    }
+    .base-info{
+        color: white;
     }
     .base-info:last-child{
       margin-right: 0;
     }
+    .base-info p:last-child{
+        margin-top: 10px;
+    }
     .icon-size{
       font-size: 32px;
     }
+    .bg-main img{
+       position: absolute;
+       top: 0;
+       width: 100%;
+       border: 0;
+
+    }
+    .container-main{
+       position: fixed;
+       left: 0;
+       right: 0;
+       z-index: 9;
+    }
+
   </style>
 </head>
 <body>
-  <div class="container-main">
-    <h1 class="son-title">控制面板</h1>
-    <div class="total-info-box">
-        <div class="base-info">
-          <p><i class="glyphicon glyphicon-user icon-size"></i></p>
-          <p>100员工人数</p>
-        </div>
-        <div class="base-info">
-          <p><i class="glyphicon glyphicon-lock icon-size"></i></p>
-          <p>客户人数</p>
-        </div>
-        <div class="base-info">
-          <p><i class="glyphicon glyphicon-star icon-size"></i></p>
-          <p>员工人数</p>
-        </div>
-        <div class="base-info">
-          <p><i class="glyphicon glyphicon-home icon-size"></i></p>
-          <p>10房屋数量</p>
-        </div>
-        <div class="base-info">
-          <p><i class="glyphicon glyphicon-headphones icon-size"></i></p>
-          <p>公告信息</p>
+    <div class="container-main">
+        <div class="total-info-box">
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-user icon-size"></i></p>
+                <p>100员工人数</p>
+            </div>
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-lock icon-size"></i></p>
+                <p>客户人数</p>
+            </div>
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-star icon-size"></i></p>
+                <p>员工人数</p>
+            </div>
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-home icon-size"></i></p>
+                <p>10房屋数量</p>
+            </div>
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-headphones icon-size"></i></p>
+                <p>公告信息</p>
+            </div>
         </div>
     </div>
-  </div>
+  <div class="bg-main"><img src="${STATIC_IMG}/home-bg.jpg" alt=""></div>
   <!--// 删除-->
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>

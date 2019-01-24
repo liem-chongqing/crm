@@ -60,7 +60,8 @@ public class HouseServlet extends BaseServlet {
         HouseService houseService = new HouseServiceImpl();
         PageUtil<HouseInfoDto> pageUtil = new PageUtil<>();
         // 查询数据库总条数
-        int totalNumber = commonService.getTotalNumber("houser_info");
+        String sql =  "SELECT COUNT(id) AS total FROM houser_info ";
+        int totalNumber = commonService.getTotalNumber(sql);
         // 得到数据的总条数后装给pagedemo模型
         pageUtil.setTotalNum(totalNumber);
         // 获取前台的分页参数

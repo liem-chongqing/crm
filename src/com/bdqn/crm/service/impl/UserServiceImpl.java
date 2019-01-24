@@ -21,14 +21,10 @@ public class UserServiceImpl implements UserService{
         return userDao.addUser(userInfo);
     }
 
-    @Override
-    public int getTotalNumber() {
-        return userDao.getTotalNumber();
-    }
 
     @Override
-    public List<UserInfo> findPageAllUser(int thisPage, int pageSize) {
-        return userDao.findPageAllUser(thisPage, pageSize);
+    public List<UserInfo> findPageAllUser(int thisPage, int pageSize, String num,String  name) {
+        return userDao.findPageAllUser(thisPage, pageSize, num, name);
     }
 
     @Override

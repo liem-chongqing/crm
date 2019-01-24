@@ -10,19 +10,14 @@ public interface UserService {
 
     int addUser(UserInfo userInfo);
 
-    /**
-     * 查询总条数
-     * @return
-     */
-    int getTotalNumber();
 
     /**
      * 分页查询全部用户
-     * @param i
+     * @param
      * @param pageSize
      * @return
      */
-    List<UserInfo> findPageAllUser(int thisPage, int pageSize);
+    List<UserInfo> findPageAllUser(int thisPage, int pageSize, String num, String name);
 
     int save(UserInfo userInfo);
 

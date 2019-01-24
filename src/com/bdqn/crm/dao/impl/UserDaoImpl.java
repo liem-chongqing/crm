@@ -23,34 +23,11 @@ public class UserDaoImpl implements UserDao{
         return DBUtil.insert("user_info", userInfo);
     }
 
-    @Override
-    public int getTotalNumber() {
-        String sql = "SELECT COUNT(id) AS total FROM user_info ";
-        Connection connection = DBUtil.getConnection();
-        ResultSet resultSet=null;
-        PreparedStatement preparedStatement=null;
-        int result = 0;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                result = resultSet.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            DBUtil.close(resultSet, preparedStatement, connection);
-        }
-
-        return result;
-    }
-
-
 
     @Override
-    public List<UserInfo> findPageAllUser(int thisPage, int pageSize) {
-        String sql = "SELECT id, num, role_name, name, sex, age,  email, mobile, idnum, nation FROM user_info ORDER BY create_time DESC LIMIT ?,?";
-        return DBUtil.find(UserInfo.class, sql, thisPage, pageSize);
+    public List<UserInfo> findPageAllUser(int thisPage, int pageSize, String num, String name) {
+        String sql = "SELECT id, num, role_name, name, sex, age,  email, mobile, idnum, nation FROM user_info WHERE num LIKE ? AND name LIKE ? ORDER BY create_time DESC LIMIT ?,?";
+        return DBUtil.find(UserInfo.class, sql, "%"+num+"%", "%"+name+"%", thisPage, pageSize);
     }
 
     @Override

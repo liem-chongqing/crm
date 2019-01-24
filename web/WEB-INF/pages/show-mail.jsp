@@ -12,8 +12,7 @@
   <div class="container-main">
     <h1 class="son-title">邮箱信息</h1>
     <div class="search-box">
-      <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addModal">新增</button>
-      <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#deleteModel">批量删除</button>
+      <button class="btn btn-success btn-sm" onclick="deleteBatch('email_info')" >批量删除</button>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered text-center">
@@ -27,25 +26,27 @@
                     <td>内容</td>
                     <td>发送时间</td>
                     <td>发送状态</td>
-                    <td>数据状态</td>
                     <td>操作</td>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach varStatus="v" items="${pageUtil.pageList}" var="email">
                 <tr>
-                    <td><input type="checkbox"></td>
+                    <td><input value="${email.id}" type="checkbox"></td>
                     <td>${(pageUtil.thisPage-1)*pageUtil.pageSize+v.count}</td>
                     <td>${email.email}</td>
                     <td>${email.userName ==null ? "未指定": email.userName}</td>
                     <td>${email.theme}</td>
                     <td>${email.content}</td>
                     <td>${email.time}</td>
-                    <td>${email.state}</td>
-                    <td>${email.used == 0 ? '有效':'无效'}</td>
+                    <td>${email.state == 0 ? '已发送':'未发送'}</td>
                     <td>
-                        <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
-                        <span>&nbsp;</span>
+                        <c:if test="${email.state == 1}">
+                            <a href="${CTX}/mail?command=sendStateMail&mailId=${email.id}" class="btn btn-primary btn-xs">发送</a>
+                            <span>&nbsp;</span>
+                            <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
+                            <span>&nbsp;</span>
+                        </c:if>
                         <span onclick="deleteOne('email_info',${email.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
                 </tr>

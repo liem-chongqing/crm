@@ -22,13 +22,12 @@ public class BaseServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp){
         String command = req.getParameter(COMMAND);
         this.log(req, resp);
-        if(null == command || command.isEmpty()){
-            throw new RuntimeException("Not command...");
-        }
+        if(null == command || command.isEmpty())throw new RuntimeException("Not command...");
         try {
             Class clazz = this.getClass();
             Method method = clazz.getMethod(command, HttpServletRequest.class, HttpServletResponse.class);
             String path = (String) method.invoke(this, req, resp);
+            if(null==path)return;
             if(path.contains(REDIRECT)){
                 resp.sendRedirect(req.getContextPath()+"/"+path.split(":")[1]);
                 return;
@@ -41,7 +40,6 @@ public class BaseServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 
     /**
      * 在Servlet中调用这个方法，自动就可以将request转换为需要的类

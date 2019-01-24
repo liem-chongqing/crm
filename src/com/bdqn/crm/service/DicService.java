@@ -7,7 +7,7 @@ import com.bdqn.crm.entity.DicType;
 import java.util.List;
 
 public interface DicService {
-    int getTotalNumber(String tableName);
+
 
     List<DicType> getAllType(int thisPage, int pageSize);
 

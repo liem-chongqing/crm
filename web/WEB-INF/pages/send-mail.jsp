@@ -36,7 +36,7 @@
                 <label>邮件状态</label>
                 <select class="form-control" name="state">
                     <option value="0">立即发送</option>
-                    <option value="1">存入草稿箱</option>
+                    <option value="1">暂不发送</option>
                 </select>
             </div>
             <div class="form-group">
