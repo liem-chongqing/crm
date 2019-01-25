@@ -4,6 +4,9 @@ import com.bdqn.crm.dao.CommonDao;
 import com.bdqn.crm.dao.impl.CommonDaoImpl;
 import com.bdqn.crm.service.CommonService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommonServiceImpl implements CommonService {
 
     private CommonDao commonDao = new CommonDaoImpl();
@@ -31,5 +34,10 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public Integer totalNumberByTableName(String tableName) {
         return commonDao.totalNumberByTableName(tableName);
+    }
+
+    @Override
+    public int batchAdd(List<ArrayList<Object>> list, String tableName) {
+        return commonDao.batchAdd(list, tableName);
     }
 }

@@ -14,14 +14,20 @@ import com.bdqn.crm.service.impl.CommonServiceImpl;
 import com.bdqn.crm.service.impl.CustomerServiceImpl;
 import com.bdqn.crm.service.impl.DicServiceImpl;
 import com.bdqn.crm.service.impl.UserServiceImpl;
+import com.bdqn.crm.util.ExcelUtil;
 import com.bdqn.crm.util.PageUtil;
+import com.jspsmart.upload.SmartUpload;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 共用模块
@@ -157,5 +163,52 @@ public class CommonServlet extends BaseServlet {
             default:
                 return "redirect:login.jsp";
         }
+    }
+
+    /**
+     * 执行上传文件
+     */
+    public String uploadFile(HttpServletRequest request, HttpServletResponse response){
+        try {
+            SmartUpload smartUpload = new SmartUpload();
+            smartUpload.initialize(this.getServletConfig(), request, response);
+            smartUpload.setCharset("UTF-8");
+            // 允许上传的类型,多个类型使用豆号分隔,指定文件的上传格式，zip,xlsx,ppt,任何文件都可以
+            smartUpload.setAllowedFilesList("xlsx,xls");
+            // smartUpload.setDeniedFilesList("exe");
+            smartUpload.setMaxFileSize(1024 * 1024 * 10);
+            smartUpload.setTotalMaxFileSize(1024 * 1024 * 100);
+            smartUpload.upload();
+            String uploadPath = this.getServletContext().getRealPath("/");
+            // 拼接一个保存图片的位置的路径
+            String saveFileDir = File.separator + "uploadIMG" + File.separator + new SimpleDateFormat("yyyyMMdd")
+                    .format(new Date()) + File.separator;
+
+            String uploadFilePath = uploadPath + saveFileDir;
+            // 在服务器指定位置创建文件
+            File uploadFile = new File(uploadFilePath);
+            if (!uploadFile.exists()) {
+                uploadFile.mkdirs();
+            }
+            String strNameAdd = UUID.randomUUID() + ".";
+            String fileExt = smartUpload.getFiles().getFile(0).getFileExt();
+            smartUpload.getFiles().getFile(0).saveAs(uploadFilePath + strNameAdd + fileExt);
+
+            String path = uploadPath+saveFileDir + strNameAdd + fileExt;
+            System.out.println("path:" + path);
+            System.out.println("开始解析文档~~");
+            List<ArrayList<Object>> list = ExcelUtil.excelReader(path,3);
+            CommonService commonService = new CommonServiceImpl();
+            String tableName = smartUpload.getRequest().getParameter("code");
+            int result = commonService.batchAdd(list, tableName);
+            switch (tableName){
+                case "user_info":
+                    return "redirect:user?command=showUser";
+            }
+        } catch (Exception e) {
+            System.err.println("上传失败!");
+            e.printStackTrace();
+        }
+        return  "";
     }
 }

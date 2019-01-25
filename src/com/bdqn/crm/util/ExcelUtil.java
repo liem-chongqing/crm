@@ -1,14 +1,18 @@
-package com.uwang.poi;
+package com.bdqn.crm.util;
 
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import com.bdqn.crm.entity.UserInfo;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -27,21 +31,27 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelUtil {
 
-    public static void main(String[] args) throws IOException {
-//		List<ArrayList<String>> list = excelReader("D:\\opt\\eclipse\\jee-oxygen-workspace\\a-md5-demo\\src\\test.xls",0,1,2);
+    public static void main(String[] args) throws Exception {
+//		List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",0,1,2);
 //		for (int i = 0; i < list.size(); i++) {
 //			for (int j = 0; j < list.get(i).size(); j++) {
 //				System.out.println(list.get(i).get(j));
 //			}
 //		}
 
-        List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\Y2课程计划-20190122.xlsx");
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = 0; j < list.get(i).size(); j++) {
-                System.out.println(list.get(i).get(j));
-            }
-        }
+//        List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",3);
+//        for (int i = 0; i < list.size(); i++) {
+//            for (int j = 0; j < list.get(i).size(); j++) {
+//                System.out.println(list.get(i).get(j));
+//            }
+//        }
+
+
+
     }
+
+
+
 
     /**
      * excel文件读取指定列的数据
@@ -109,7 +119,7 @@ public class ExcelUtil {
      * @throws IOException
      */
     @SuppressWarnings({ "unused" })
-    public static ArrayList<ArrayList<String>> excelReader(String excelPath) throws IOException {
+    public static ArrayList<ArrayList<Object>> excelReader(String excelPath, int rowNumber) throws IOException {
         // 创建excel工作簿对象
         Workbook workbook = null;
         FormulaEvaluator formulaEvaluator = null;
@@ -131,7 +141,7 @@ public class ExcelUtil {
             return null;
         }
         //创建二维数组,储存excel行列数据
-        ArrayList<ArrayList<String>> als = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<Object>> als = new ArrayList<ArrayList<Object>>();
         //遍历工作簿中的sheet
         for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
             Sheet sheet = workbook.getSheetAt(numSheet);
@@ -140,13 +150,13 @@ public class ExcelUtil {
                 continue;
             }
             // 对于每个sheet，读取其中的每一行
-            for (int rowNum = 0; rowNum <= sheet.getLastRowNum(); rowNum++) {
+            for (int rowNum = rowNumber; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 Row row = sheet.getRow(rowNum);
                 if (row == null) {
                     continue;
                 }
                 // 遍历每一行的每一列
-                ArrayList<String> al = new ArrayList<String>();
+                ArrayList<Object> al = new ArrayList<Object>();
                 for(int columnNum = 0 ; columnNum < row.getLastCellNum(); columnNum++){
                     Cell cell = row.getCell(columnNum);
                     al.add(getValue(cell, formulaEvaluator));
@@ -157,6 +167,8 @@ public class ExcelUtil {
         is.close();
         return als;
     }
+
+
 
     /**
      * excel文件的数据读取,包括后缀为xls,xlsx

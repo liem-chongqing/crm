@@ -1,6 +1,9 @@
 package com.bdqn.crm.service;
 
-import com.bdqn.crm.entity.CustomerInfo; /**
+import com.bdqn.crm.entity.CustomerInfo;
+
+import java.util.ArrayList;
+import java.util.List; /**
  * 共有接口方法
  */
 public interface CommonService {
@@ -42,4 +45,11 @@ public interface CommonService {
      * @return
      */
     Integer totalNumberByTableName(String tableName);
+
+    /**
+     * 批量上传文件
+     * @param list
+     * @return
+     */
+    int batchAdd(List<ArrayList<Object>> list, String tableName);
 }

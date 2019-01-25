@@ -1,6 +1,9 @@
 package com.bdqn.crm.dao;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface CommonDao {
 
 
@@ -13,4 +16,6 @@ public interface CommonDao {
     int update(String tableName, Object object);
 
     Integer totalNumberByTableName(String tableName);
+
+    int batchAdd(List<ArrayList<Object>> list, String tableName);
 }
