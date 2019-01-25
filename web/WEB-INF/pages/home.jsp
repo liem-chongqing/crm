@@ -17,7 +17,7 @@
       <!-- 菜单 -->
       <nav class="col-lg-2 col-md-2 menu">
         <ul class="one-nav">
-          <li><h4><a href="${CTX}/common?command=showHome" target="iframe-view"><i class="glyphicon glyphicon-th-large"></i>&nbsp;&nbsp;控制面板</a></h4></li>
+          <li><h4><a href="${CTX}/common?command=dataTotal" target="iframe-view"><i class="glyphicon glyphicon-th-large"></i>&nbsp;&nbsp;控制面板</a></h4></li>
           <c:forEach var="menu" items="${menu}">
             <li>
               <h4><i class="${menu.icon}"></i>&nbsp;&nbsp;${menu.name}</h4>
@@ -32,7 +32,7 @@
       </nav>
       <!-- // 菜单 -->
       <section class="col-lg-10 col-md-10 col-sm-12 col-xs-12 main-box">
-        <iframe name="iframe-view" src="${CTX}/common?command=showHome" scrolling="auto" frameborder="0" width="100%" height="100%"></iframe>
+        <iframe name="iframe-view" src="${CTX}/common?command=dataTotal" scrolling="auto" frameborder="0" width="100%" height="100%"></iframe>
       </section>
     </div>
     <!-- 页脚 -->

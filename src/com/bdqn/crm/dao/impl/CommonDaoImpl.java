@@ -53,4 +53,10 @@ public class CommonDaoImpl implements CommonDao {
     public int update(String tableName, Object object) {
         return DBUtil.modify(tableName, object);
     }
+
+    @Override
+    public Integer totalNumberByTableName(String tableName) {
+        String sql ="SELECT COUNT(id) AS total FROM "+tableName;
+        return getTotalNumber(sql);
+    }
 }

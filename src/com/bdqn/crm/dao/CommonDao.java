@@ -11,4 +11,6 @@ public interface CommonDao {
     int deleteBatch(String tableName, String ids);
 
     int update(String tableName, Object object);
+
+    Integer totalNumberByTableName(String tableName);
 }

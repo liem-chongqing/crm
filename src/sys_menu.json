@@ -96,7 +96,8 @@
         "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
-  },{
+  },
+  {
     "code": "5000",
     "name": "公告管理",
     "url": "#none",
@@ -109,7 +110,8 @@
         "icon": "glyphicon glyphicon-chevron-right"
       }
     ]
-  },{
+  },
+  {
     "code": "6000",
     "name": "邮件管理",
     "url": "#none",

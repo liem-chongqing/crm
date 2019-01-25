@@ -30,6 +30,32 @@ import java.util.List;
 public class CommonServlet extends BaseServlet {
 
 
+    /**
+     * 数据统计
+     * @param request
+     * @param response
+     * @return
+     */
+    public String dataTotal(HttpServletRequest request, HttpServletResponse response){
+        CommonService commonService = new CommonServiceImpl();
+        // 统计总员工数
+        Integer userTotal = commonService.totalNumberByTableName("user_info");
+        // 统计总客户数
+        Integer customerTotal = commonService.totalNumberByTableName("customer_info");
+        // 统计总房屋数
+        Integer houseTotal = commonService.totalNumberByTableName("houser_info");
+        // 统计总公告数
+        Integer noticeTotal = commonService.totalNumberByTableName("notice_info");
+        // 统计总邮件数
+        Integer mailTotal = commonService.totalNumberByTableName("email_info");
+        request.setAttribute("userTotal", userTotal);
+        request.setAttribute("customerTotal", customerTotal);
+        request.setAttribute("houseTotal", houseTotal);
+        request.setAttribute("noticeTotal", noticeTotal);
+        request.setAttribute("mailTotal", mailTotal);
+        return  "show-home";
+    }
+
 
 
     /**
@@ -106,9 +132,7 @@ public class CommonServlet extends BaseServlet {
         return "redirect:login.jsp";
     }
 
-    public String showHome(HttpServletRequest request, HttpServletResponse response){
-        return  "show-home";
-    }
+
 
     /**
      * 修改数据

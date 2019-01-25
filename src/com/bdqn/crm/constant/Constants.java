@@ -12,8 +12,8 @@ public class Constants {
     }
 
     public interface Role{
-        int ADMIN = 0;          // 管理员
-        int BASE_UESR = 1;      // 普通用户
+        String ADMIN = "0";          // 管理员
+        String BASE_UESR = "1";      // 普通用户
     }
 
     public interface Nation{

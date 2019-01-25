@@ -16,10 +16,6 @@
         <h1 class="son-title">新增员工</h1>
         <div class="container-fluid base-info">统一默认密码为：123456</div>
         <div class="col-md-12 col-sm-12">
-            <div class="form-group">
-                <input type="button" value="批量上传" class="btn btn-success">
-                <a href="" class="btn btn-success">下载模板</a>
-            </div>
             <form action="${CTX}/user?command=save" method="post">
                 <div class="form-group">
                     <label>角色名</label>

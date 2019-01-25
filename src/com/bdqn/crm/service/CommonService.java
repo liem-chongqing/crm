@@ -35,4 +35,11 @@ public interface CommonService {
      * @return
      */
     int update(String tableName, Object object);
+
+    /**
+     * 统计总数据量
+     * @param customer_info
+     * @return
+     */
+    Integer totalNumberByTableName(String tableName);
 }

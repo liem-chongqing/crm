@@ -53,23 +53,23 @@
         <div class="total-info-box">
             <div class="base-info">
                 <p><i class="glyphicon glyphicon-user icon-size"></i></p>
-                <p>100员工人数</p>
+                <p>${userTotal}员工人数</p>
             </div>
             <div class="base-info">
                 <p><i class="glyphicon glyphicon-lock icon-size"></i></p>
-                <p>客户人数</p>
-            </div>
-            <div class="base-info">
-                <p><i class="glyphicon glyphicon-star icon-size"></i></p>
-                <p>员工人数</p>
+                <p>${customerTotal}客户人数</p>
             </div>
             <div class="base-info">
                 <p><i class="glyphicon glyphicon-home icon-size"></i></p>
-                <p>10房屋数量</p>
+                <p>${houseTotal}房屋数量</p>
             </div>
             <div class="base-info">
                 <p><i class="glyphicon glyphicon-headphones icon-size"></i></p>
-                <p>公告信息</p>
+                <p>${noticeTotal}公告信息</p>
+            </div>
+            <div class="base-info">
+                <p><i class="glyphicon glyphicon-star icon-size"></i></p>
+                <p>${mailTotal}邮件数量</p>
             </div>
         </div>
     </div>

@@ -27,4 +27,9 @@ public class CommonServiceImpl implements CommonService {
     public int update(String tableName, Object object) {
         return commonDao.update(tableName, object);
     }
+
+    @Override
+    public Integer totalNumberByTableName(String tableName) {
+        return commonDao.totalNumberByTableName(tableName);
+    }
 }

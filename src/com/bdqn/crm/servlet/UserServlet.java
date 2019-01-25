@@ -154,7 +154,11 @@ public class UserServlet extends BaseServlet {
 
             HttpSession session = req.getSession();
             // 管理员菜单
-            req.setAttribute("menu", MenuUtil.getSysMenu(MenuUtil.SYS_MENU));
+            if(Constants.Role.BASE_UESR.equals(user.getRoleName())){
+                req.setAttribute("menu", MenuUtil.getSysMenu(MenuUtil.BASE_MENU));
+            }else{
+                req.setAttribute("menu", MenuUtil.getSysMenu(MenuUtil.SYS_MENU));
+            }
             session.setAttribute("user", user);
             // 初始化数据字典信息
             initDicInfo(req, resp);
