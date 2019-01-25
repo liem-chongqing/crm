@@ -5,14 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.bdqn.crm.entity.UserInfo;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -30,25 +25,25 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  */
 public class ExcelUtil {
-
-    public static void main(String[] args) throws Exception {
-//		List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",0,1,2);
-//		for (int i = 0; i < list.size(); i++) {
-//			for (int j = 0; j < list.get(i).size(); j++) {
-//				System.out.println(list.get(i).get(j));
-//			}
-//		}
-
-//        List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",3);
-//        for (int i = 0; i < list.size(); i++) {
-//            for (int j = 0; j < list.get(i).size(); j++) {
-//                System.out.println(list.get(i).get(j));
-//            }
-//        }
-
-
-
-    }
+//
+//    public static void main(String[] args) throws Exception {
+////		List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",0,1,2);
+////		for (int i = 0; i < list.size(); i++) {
+////			for (int j = 0; j < list.get(i).size(); j++) {
+////				System.out.println(list.get(i).get(j));
+////			}
+////		}
+//
+////        List<ArrayList<String>> list = excelReader("C:\\Users\\Lin Li-PO\\Desktop\\user_info_templet.xlsx",3);
+////        for (int i = 0; i < list.size(); i++) {
+////            for (int j = 0; j < list.get(i).size(); j++) {
+////                System.out.println(list.get(i).get(j));
+////            }
+////        }
+//
+//
+//
+//    }
 
 
 

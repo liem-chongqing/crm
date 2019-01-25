@@ -21,4 +21,11 @@ public interface NoticeService {
      * @return
      */
     int save(NoticeInfo noticeInfo);
+
+    /**
+     * 查询公告条数据
+     * @param rowNumber
+     * @return
+     */
+    List<NoticeInfo> findNoticeInfoByNumber(int rowNumber);
 }

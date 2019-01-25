@@ -10,4 +10,6 @@ public interface NoticeDao {
     List<NoticeInfoDto> findPageAllNotice(int thisPage, int pageSize);
 
     int save(NoticeInfo noticeInfo);
+
+    List<NoticeInfo> findNoticeInfoByNumber(int rowNumber);
 }

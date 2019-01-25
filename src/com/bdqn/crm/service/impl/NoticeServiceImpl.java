@@ -21,4 +21,9 @@ public class NoticeServiceImpl implements NoticeService {
     public int save(NoticeInfo noticeInfo) {
         return noticeDao.save(noticeInfo);
     }
+
+    @Override
+    public List<NoticeInfo> findNoticeInfoByNumber(int rowNumber) {
+        return noticeDao.findNoticeInfoByNumber(rowNumber);
+    }
 }

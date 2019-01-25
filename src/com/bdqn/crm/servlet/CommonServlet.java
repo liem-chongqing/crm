@@ -3,17 +3,13 @@ package com.bdqn.crm.servlet;
 
 import com.bdqn.crm.constant.Constants;
 import com.bdqn.crm.dto.CustomerInfoDto;
+import com.bdqn.crm.dto.NoticeInfoDto;
 import com.bdqn.crm.entity.CustomerInfo;
 import com.bdqn.crm.entity.DicItem;
+import com.bdqn.crm.entity.NoticeInfo;
 import com.bdqn.crm.entity.UserInfo;
-import com.bdqn.crm.service.CommonService;
-import com.bdqn.crm.service.CustomerService;
-import com.bdqn.crm.service.DicService;
-import com.bdqn.crm.service.UserService;
-import com.bdqn.crm.service.impl.CommonServiceImpl;
-import com.bdqn.crm.service.impl.CustomerServiceImpl;
-import com.bdqn.crm.service.impl.DicServiceImpl;
-import com.bdqn.crm.service.impl.UserServiceImpl;
+import com.bdqn.crm.service.*;
+import com.bdqn.crm.service.impl.*;
 import com.bdqn.crm.util.ExcelUtil;
 import com.bdqn.crm.util.PageUtil;
 import com.bdqn.crm.util.StringsUtil;
@@ -55,11 +51,17 @@ public class CommonServlet extends BaseServlet {
         Integer noticeTotal = commonService.totalNumberByTableName("notice_info");
         // 统计总邮件数
         Integer mailTotal = commonService.totalNumberByTableName("email_info");
+        // 获取最近2条公告信息
+        NoticeService noticeService = new NoticeServiceImpl();
+        int rowNumber = 3;
+        List<NoticeInfo> noticeInfos = noticeService.findNoticeInfoByNumber(rowNumber);
         request.setAttribute("userTotal", userTotal);
         request.setAttribute("customerTotal", customerTotal);
         request.setAttribute("houseTotal", houseTotal);
         request.setAttribute("noticeTotal", noticeTotal);
         request.setAttribute("mailTotal", mailTotal);
+        System.out.println(noticeInfos);
+        request.setAttribute("noticeInfos", noticeInfos);
         return  "show-home";
     }
 

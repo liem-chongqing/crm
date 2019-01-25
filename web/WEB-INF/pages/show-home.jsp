@@ -45,11 +45,55 @@
        right: 0;
        z-index: 9;
     }
+    .notice{
+        margin-top: 10px;
+        text-align: left;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 10px;
+        /*background-color: rgba(0,0,0,.2);*/
+        color: red;
+        overflow: hidden;
+    }
+    .notice div.notice-box{
+        height: 60px;
+        animation: myfirst 3s infinite alternate;
+        -moz-animation: myfirst 3s infinite alternate;	/* Firefox */
+        -webkit-animation: myfirst 3s infinite alternate;	/* Safari 和 Chrome */
+        -o-animation: myfirst 3s infinite alternate;	/* Opera */
+    }
+    .notice-icon{
+        line-height: 30px;
+    }
+    @keyframes myfirst{
+        10% {transform:translateY(0px);
+            -ms-transform:translateY(0px); 	/* IE 9 */
+            -moz-transform:translateY(0px); 	/* Firefox */
+            -webkit-transform:translateY(0px); /* Safari 和 Chrome */
+            -o-transform:translateY(0px);}
+        60% {transform:translateY(-30px);
+            -ms-transform:translateY(-30px); 	/* IE 9 */
+            -moz-transform:translateY(-30px); 	/* Firefox */
+            -webkit-transform:translateY(-30px); /* Safari 和 Chrome */
+            -o-transform:translateY(-30px);}
+        100% {transform:translateY(-60px);
+            -ms-transform:translateY(-60px); 	/* IE 9 */
+            -moz-transform:translateY(-60px); 	/* Firefox */
+            -webkit-transform:translateY(-60px); /* Safari 和 Chrome */
+            -o-transform:translateY(-60px);}
+    }
 
   </style>
 </head>
 <body>
     <div class="container-main">
+        <div class="notice">
+            <div class="notice-box">
+            <c:forEach items="${noticeInfos}" var="noticeInfo">
+                <p><span class="glyphicon glyphicon-volume-up notice-icon"></span>【&nbsp;<fmt:formatDate type="date"  value="${noticeInfo.time}" />&nbsp;】《${noticeInfo.item}》${noticeInfo.content}</p>
+            </c:forEach>
+            </div>
+        </div>
         <div class="total-info-box">
             <div class="base-info">
                 <p><i class="glyphicon glyphicon-user icon-size"></i></p>

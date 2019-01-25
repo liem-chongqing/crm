@@ -19,4 +19,10 @@ public class NoticeDaoImpl implements NoticeDao {
     public int save(NoticeInfo noticeInfo) {
         return DBUtil.insert("notice_info", noticeInfo);
     }
+
+    @Override
+    public List<NoticeInfo> findNoticeInfoByNumber(int rowNumber) {
+        String sql ="SELECT * FROM notice_info  ORDER BY time DESC LIMIT ?";
+        return DBUtil.find(NoticeInfo.class, sql, rowNumber);
+    }
 }
