@@ -16,6 +16,7 @@ import com.bdqn.crm.service.impl.DicServiceImpl;
 import com.bdqn.crm.service.impl.UserServiceImpl;
 import com.bdqn.crm.util.ExcelUtil;
 import com.bdqn.crm.util.PageUtil;
+import com.bdqn.crm.util.StringsUtil;
 import com.jspsmart.upload.SmartUpload;
 
 import javax.servlet.annotation.WebServlet;
@@ -160,6 +161,24 @@ public class CommonServlet extends BaseServlet {
                     commonService.update("customer_info", customerInfo);
                 }
                 return "redirect:customer?command=showCustomer";
+            case "user":
+                UserInfo userInfo = parameterBean(request, UserInfo.class);
+                System.out.println("userInfo.getId():"+userInfo.getId());
+                if(null != userInfo.getId()){
+                    UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+                    System.out.println("user.user():"+user);
+                    if(null != user){
+                        userInfo.setPwd("123456");
+                        userInfo.setUpdateTime(new Date());
+                        userInfo.setCreateTime(new Date());
+                        userInfo.setCreateMan(user.getName());
+                        userInfo.setUpdateMan(user.getName());
+                        userInfo.setAge(StringsUtil.idNOToAge(userInfo.getIdnum()));
+                        CommonService commonService = new CommonServiceImpl();
+                        commonService.update("user_info", userInfo);
+                    }
+                }
+                return "redirect:user?command=showUser";
             default:
                 return "redirect:login.jsp";
         }

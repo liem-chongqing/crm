@@ -61,7 +61,7 @@
                     <td>${pageUser.email }</td>
                     <td>${pageUser.mobile}</td>
                     <td>
-                        <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
+                        <span onclick="getDetails(${pageUser.id})" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
                         <span>&nbsp;</span>
                         <span onclick="deleteOne('user_info', ${pageUser.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
@@ -90,96 +90,13 @@
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   <h4 class="modal-title" id="myModalLabel">查看详情/修改</h4>
               </div>
-              <div class="modal-body">
-                  <form action="${CTX}/user?command=save" method="post">
-                      <div class="form-group">
-                          <label>角色名</label>
-                          <select class="form-control" name="roleName">
-                              <option value="0">管理员</option>
-                              <option value="1">普通用户</option>
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label>姓名</label>
-                          <input value="黎林" type="text" name="name" class="form-control" placeholder="姓名">
-                      </div>
-                      <div class="form-group">
-                          <label>性别</label>
-                          <select class="form-control" name="sex">
-                              <option value="0">男</option>
-                              <option value="1">女</option>
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label>民族</label>
-                          <select class="form-control" name="nation">
-                              <option value="0">汉族</option>
-                              <option value="1">苗族</option>
-                              <option value="2">土家族</option>
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label>婚姻</label>
-                          <select class="form-control" name="married">
-                              <option value="0">已婚</option>
-                              <option value="1">未婚</option>
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label>学历</label>
-                          <select class="form-control" name="diploma">
-                              <option value="0">小学</option>
-                              <option value="1">初中</option>
-                              <option value="2">高中</option>
-                              <option value="3">专科</option>
-                              <option value="4">本科</option>
-                              <option value="5">硕士</option>
-                              <option value="6">博士</option>
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label>移动电话</label>
-                          <input value="13677603400" type="text" name="mobile" class="form-control" placeholder="手机号码">
-                      </div>
-                      <div class="form-group">
-                          <label>地址</label>
-                          <input value="重庆市渝北区" type="text" name="address" class="form-control" placeholder="长居住地址">
-                      </div>
-                      <div class="form-group">
-                          <label>固话</label>
-                          <input value="023-12431256" type="text" name="tel" class="form-control" placeholder="固定电话">
-                      </div>
-                      <div class="form-group">
-                          <label>身份证号</label>
-                          <input value="500231199303126052" type="text" name="idnum" class="form-control" placeholder="身份证号">
-                      </div>
-                      <div class="form-group">
-                          <label>邮箱</label>
-                          <input value="996052600@qq.com" type="text" name="email" class="form-control" placeholder="邮箱">
-                      </div>
-                      <div class="form-group">
-                          <label>爱好</label>
-                          <input value="篮球,足球,羽毛球" type="text" name="hobby" class="form-control" placeholder="爱好">
-                      </div>
+              <form id="modifyBox" action="${CTX}/common?command=modifyData&code=user" method="post">
 
-                      <div class="form-group">
-                          <label>银行卡号</label>
-                          <input value="100000000000000" type="text" name="bankCard" class="form-control" placeholder="银行卡号">
-                      </div>
 
-                      <div class="form-group">
-                          <label>是否激活</label>
-                          <select class="form-control" name="used">
-                              <option value="0">是</option>
-                              <option value="1">否</option>
-                          </select>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  <button type="button" class="btn btn-primary">提交更改</button>
-              </div>
+
+
+
+              </form>
           </div><!-- /.modal-content -->
       </div><!-- /.modal -->
   </div>
@@ -211,5 +128,144 @@
   <script type="text/javascript" src="${STATIC_LIB}/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="${STATIC_LIB}/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
   <%@ include file="/WEB-INF/layout/delete-model.jspf"%>
+  <script type="text/javascript">
+      function getDetails(userId){
+          $.ajax({
+              type: "GET",
+              url: "${CTX}/user?command=userInfo&userId="+userId,
+              dataType: "json",
+              success: function(data){
+                  console.info(data);
+                  var roleName = data.roleName;
+                  var married = data.married;
+                  var sex = data.sex;
+                  var used = data.used;
+                  var nation = data.nation;
+                  $('#modifyBox').empty();   //清空myModal里面的所有内容
+                  var html = '';
+                  html +='<div class="modal-body">';
+                  html +='<div class="form-group">';
+                  html +='<label>角色名</label>';
+                  html +='<input type="hidden" value="'+data.id+'" name="id">';
+                  html +='<select class="form-control" name="roleName">';
+                  if(roleName==1){
+                      html +='<option value="0" selected>管理员</option>';
+                      html +='<option value="1">普通用户</option>';
+                  }else{
+                      html +='<option value="0">管理员</option>';
+                      html +='<option value="1" selected>普通用户</option>';
+                  }
+                  html +='</select>';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>姓名</label>';
+                  html +='<input value="'+data.name+'" type="text" name="name" class="form-control" placeholder="姓名">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>性别</label>';
+                  html +='<select class="form-control" name="sex">';
+                  if(sex==0){
+                      html +='<option value="0" selected>男</option>';
+                      html +='<option value="1">女</option>';
+                  }else{
+                      html +='<option value="0">男</option>';
+                      html +='<option value="1" selected>女</option>';
+                  }
+                  html +='</select>';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>民族</label>';
+                  html +='<select class="form-control" name="nation">';
+                  if(nation==0){
+                      html +='<option value="0" selected>汉族</option>';
+                      html +='<option value="1">苗族</option>';
+                      html +='<option value="2">土家族</option>';
+                  }else if(nation==1){
+                      html +='<option value="0">汉族</option>';
+                      html +='<option value="1" selected>苗族</option>';
+                      html +='<option value="2">土家族</option>';
+                  }else{
+                      html +='<option value="0">汉族</option>';
+                      html +='<option value="1">苗族</option>';
+                      html +='<option value="2" selected>不详</option>';
+                  }
+                  html +='</select>';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>婚姻</label>';
+                  html +='<select class="form-control" name="married">';
+                  if(married==0){
+                      html +='<option value="0" selected>已婚</option>';
+                      html +='<option value="1">未婚</option>';
+                  }else{
+                      html +='<option value="0">已婚</option>';
+                      html +='<option value="1" selected>未婚</option>';
+                  }
+                  html +='</select>';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>学历</label>';
+                  html +='<select class="form-control" name="diploma">';
+                  html +='<option value="0">小学</option>';
+                  html +='<option value="1">初中</option>';
+                  html +='<option value="2">高中</option>';
+                  html +='<option value="3">专科</option>';
+                  html +='<option value="4">本科</option>';
+                  html +='<option value="5">硕士</option>';
+                  html +='<option value="6">博士</option>';
+                  html +='</select>';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>移动电话</label>';
+                  html +='<input value="'+data.mobile+'" type="text" name="mobile" class="form-control" placeholder="手机号码">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>地址</label>';
+                  html +='<input value="'+data.address+'" type="text" name="address" class="form-control" placeholder="长居住地址">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>固话</label>';
+                  html +='<input value="'+data.tel+'" type="text" name="tel" class="form-control" placeholder="固定电话">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>身份证号</label>';
+                  html +='<input value="'+data.idnum+'" type="text" name="idnum" class="form-control" placeholder="身份证号">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>邮箱</label>';
+                  html +='<input value="'+data.email+'" type="text" name="email" class="form-control" placeholder="邮箱">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>爱好</label>';
+                  html +='<input value="'+data.hobby+'" type="text" name="hobby" class="form-control" placeholder="爱好">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>银行卡号</label>';
+                  html +='<input value="'+data.bankCard+'" type="text" name="bankCard" class="form-control" placeholder="银行卡号">';
+                  html +='</div>';
+                  html +='<div class="form-group">';
+                  html +='<label>是否激活</label>';
+                  html +='<select class="form-control" name="used">';
+                  if(used==0){
+                      html +='<option value="0" selected>是</option>';
+                      html +='<option value="1">否</option>';
+                  }else{
+                      html +='<option value="0">是</option>';
+                      html +='<option value="1" selected>否</option>';
+                  }
+                  html +='</select>';
+                  html +='</div>';
+                  html +='</div>';
+                  html +='<div class="modal-footer">';
+                  html +='<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
+                  html +='<button type="submit" class="btn btn-primary">提交更改</button>';
+                  html +='</div>';
+
+
+                  $('#modifyBox').html(html);
+              }
+          });
+      }
+  </script>
 </body>
 </html>

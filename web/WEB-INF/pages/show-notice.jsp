@@ -42,8 +42,6 @@
                     <td><fmt:formatDate value="${notice.endTime }" pattern="yyyy-MM-dd HH:mm"/></td>
                     <td>${notice.used == 0 ? '有效':'无效'}</td>
                     <td>
-                        <span data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="查看/编辑"></span></span>
-                        <span>&nbsp;</span>
                         <span onclick="deleteOne('notice_info',${notice.id})" data-toggle="modal" data-target="#deleteData" ><span class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="bottom" title="删除"></span></span>
                     </td>
                 </tr>

@@ -76,7 +76,7 @@
                   <input name="rememberMe" type="checkbox">记住密码
                 </c:if>
               </label>
-              <a href="" >忘记密码?</a>
+              <%--<a href="" >忘记密码?</a>--%>
             </div>
             <button type="submit" class="btn btn-success btn-100">登录</button>
           </form>

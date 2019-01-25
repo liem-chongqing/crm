@@ -1,13 +1,17 @@
 package com.bdqn.crm.servlet;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bdqn.crm.constant.Constants;
+import com.bdqn.crm.dto.CustomerInfoDto;
 import com.bdqn.crm.entity.DicItem;
 import com.bdqn.crm.entity.UserInfo;
 import com.bdqn.crm.service.CommonService;
+import com.bdqn.crm.service.CustomerService;
 import com.bdqn.crm.service.DicService;
 import com.bdqn.crm.service.UserService;
 import com.bdqn.crm.service.impl.CommonServiceImpl;
+import com.bdqn.crm.service.impl.CustomerServiceImpl;
 import com.bdqn.crm.service.impl.DicServiceImpl;
 import com.bdqn.crm.service.impl.UserServiceImpl;
 import com.bdqn.crm.util.MenuUtil;
@@ -17,6 +21,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -167,6 +173,24 @@ public class UserServlet extends BaseServlet {
         return  "redirect:login.jsp";
     }
 
+
+    /**
+     * 根据id查询用户的信息
+     * @param request
+     * @param response
+     */
+    public void userInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userId = request.getParameter("userId");
+        if(null!=userId){
+            UserService userService = new UserServiceImpl();
+            UserInfo userInfo = userService.getUserInfoByuserId(Long.parseLong(userId));
+            System.out.println("userInfo:"+userInfo);
+            PrintWriter out = response.getWriter();
+            out.write(JSON.toJSONString(userInfo));
+            out.flush();
+            out.close();
+        }
+    }
 
 
     /**

@@ -41,5 +41,11 @@ public class UserDaoImpl implements UserDao{
         return DBUtil.find(UserInfo.class, sql, enable);
     }
 
+    @Override
+    public UserInfo getUserInfoByuserId(Long userId) {
+        String sql = "SELECT id,role_name,name,sex,mobile,age,address,num,tel,idnum,email,hobby,diploma,bank_card,nation,married,used FROM user_info WHERE id=?";
+        return DBUtil.get(UserInfo.class, sql, userId);
+    }
+
 
 }

@@ -37,4 +37,9 @@ public class UserServiceImpl implements UserService{
     public List<UserInfo> findAllUserByEnable(int enable) {
         return userDao.findAllUserByEnable(enable);
     }
+
+    @Override
+    public UserInfo getUserInfoByuserId(Long userId) {
+        return userDao.getUserInfoByuserId(userId);
+    }
 }

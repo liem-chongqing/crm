@@ -17,4 +17,6 @@ public interface UserDao {
 
 
     List<UserInfo> findAllUserByEnable(int enable);
+
+    UserInfo getUserInfoByuserId(Long userId);
 }

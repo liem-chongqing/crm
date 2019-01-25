@@ -30,4 +30,10 @@ public interface UserService {
     List<UserInfo> findAllUserByEnable(int enable);
 
 
+    /**
+     * 通过ID查询用户详细信息
+     * @param i
+     * @return
+     */
+    UserInfo getUserInfoByuserId(Long userId);
 }
