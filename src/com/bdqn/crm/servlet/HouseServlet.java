@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * 房屋模块
+ */
 @WebServlet("/house")
 public class HouseServlet extends BaseServlet {
 
